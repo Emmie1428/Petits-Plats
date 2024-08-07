@@ -82,3 +82,20 @@ header h1 {
 .search-button:hover .search-icon {
     stroke: black; 
 }
+
+.main {
+    background-color: #EDEDED;
+}
+
+.recipe-card h2 {
+    font-family: "Anton", sans-serif;
+}
+
+.recipe-time {
+    background-color: #FFD15B;
+}
+
+.text-custom-gray {
+    color: #7A7A7A;
+  }
+  
