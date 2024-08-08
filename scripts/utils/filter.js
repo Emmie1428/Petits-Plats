@@ -1,48 +1,38 @@
-// filter.js
-
 export function applyFiltersAndSearch(allRecipes, searchInput, ingredientFilter, applianceFilter, ustensilFilter, updateFilters, displayRecipes) {
-    if (!allRecipes || !searchInput || !ingredientFilter || !applianceFilter || !ustensilFilter || !updateFilters || !displayRecipes) {
-        console.error('One or more arguments are missing in applyFiltersAndSearch');
-        return;
-    }
-
     const searchQuery = searchInput.value.toLowerCase();
     const selectedIngredient = ingredientFilter.value.toLowerCase();
     const selectedAppliance = applianceFilter.value.toLowerCase();
     const selectedUstensil = ustensilFilter.value.toLowerCase();
 
-    const filteredRecipes = allRecipes.filter(recipe => {
-        const matchesSearch = searchQuery 
-            ? recipe.name.toLowerCase().includes(searchQuery) || 
-              recipe.description.toLowerCase().includes(searchQuery) || 
-              recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchQuery))
-            : true;
+    let filteredRecipes = allRecipes;
 
-        const matchesIngredient = selectedIngredient 
-            ? recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(selectedIngredient)) 
-            : true;
+    if (searchQuery.length >= 3) {
+        filteredRecipes = allRecipes.filter(recipe => {
+            const matchesSearch = recipe.name.toLowerCase().includes(searchQuery) || 
+                recipe.description.toLowerCase().includes(searchQuery) || 
+                recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchQuery));
 
-        const matchesAppliance = selectedAppliance 
-            ? recipe.appliance.toLowerCase() === selectedAppliance 
-            : true;
+            const matchesIngredient = selectedIngredient 
+                ? recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(selectedIngredient)) 
+                : true;
 
-        const matchesUstensil = selectedUstensil 
-            ? recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(selectedUstensil)) 
-            : true;
+            const matchesAppliance = selectedAppliance 
+                ? recipe.appliance.toLowerCase() === selectedAppliance 
+                : true;
 
-        return matchesSearch && matchesIngredient && matchesAppliance && matchesUstensil;
-    });
+            const matchesUstensil = selectedUstensil 
+                ? recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(selectedUstensil)) 
+                : true;
+
+            return matchesSearch && matchesIngredient && matchesAppliance && matchesUstensil;
+        });
+    }
 
     updateFilters(filteredRecipes, ingredientFilter, applianceFilter, ustensilFilter);
     displayRecipes(filteredRecipes);
 }
 
 export function updateFilters(filteredRecipes, ingredientFilter, applianceFilter, ustensilFilter) {
-    if (!filteredRecipes || !ingredientFilter || !applianceFilter || !ustensilFilter) {
-        console.error('One or more arguments are missing in updateFilters');
-        return;
-    }
-
     const ingredientSet = new Set();
     const applianceSet = new Set();
     const ustensilSet = new Set();
@@ -59,11 +49,6 @@ export function updateFilters(filteredRecipes, ingredientFilter, applianceFilter
 }
 
 function populateDropdown(dropdown, options) {
-    if (!dropdown) {
-        console.error('Dropdown element is undefined');
-        return;
-    }
-
     const selectedValue = dropdown.value.toLowerCase();
     dropdown.innerHTML = '<option value="">Tous</option>';
     options.sort().forEach(option => {
