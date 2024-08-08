@@ -30,9 +30,26 @@
         </div>
     </header>
     <main>
-      <section class="recipes-container"></section>
+      <div class="flex space-x-4 p-4">
+        <select id="ingredient-filter" class="w-48 p-2.5 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+            <!-- Les options sont générées dynamiquement -->
+        </select>
+        
+        <select id="appliance-filter" class="w-48 p-2.5 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+            <!-- Les options sont générées dynamiquement -->
+        </select>
+        
+        <select id="ustensil-filter" class="w-48 p-2.5 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+            <!-- Les options sont générées dynamiquement -->
+        </select>
+      </div>
+      <div class="tags-container flex flex-wrap space-x-2 mt-4"></div>
+
+    
+      <section class="recipes-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6"></section>
     </main>
-    <script src="scripts/index.js"></script>
+    
+    <script type="module" src="scripts/index.js"></script>
 </body>
 </html>
 
