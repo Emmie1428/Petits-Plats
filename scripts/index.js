@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    let allRecipes = [];
+
     fetch('data/recipes.JSON')
         .then(response => {
             if (!response.ok) {
@@ -7,17 +9,42 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            displayRecipes(data.recipes);
+            allRecipes = data.recipes;
+            displayRecipes(allRecipes);
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
+
+    const searchInput = document.querySelector('.search-input');
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const filteredRecipes = allRecipes.filter(recipe => {
+            const nameMatch = recipe.name.toLowerCase().includes(query);
+            const ingredientMatch = recipe.ingredients.some(ingredient => 
+                ingredient.ingredient.toLowerCase().includes(query)
+            );
+            const descriptionMatch = recipe.description.toLowerCase().includes(query);
+
+            return nameMatch || ingredientMatch || descriptionMatch;
+        });
+        displayRecipes(filteredRecipes);
+    });
 });
 
 function displayRecipes(recipes) {
     const recipesContainer = document.querySelector('.recipes-container');
+    recipesContainer.innerHTML = ''; // Clear previous results
     recipesContainer.classList.add('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'gap-6', 'p-6');
     
+    if (recipes.length === 0) {
+        const noResultMessage = document.createElement('p');
+        noResultMessage.textContent = 'Aucune recette trouvée';
+        noResultMessage.classList.add('text-center', 'text-gray-500', 'w-full', 'col-span-3');
+        recipesContainer.appendChild(noResultMessage);
+        return;
+    }
+
     recipes.forEach(recipe => {
         const recipeCard = document.createElement('article');
         recipeCard.classList.add('recipe-card', 'rounded-lg', 'shadow-md', 'overflow-hidden', 'bg-white');
