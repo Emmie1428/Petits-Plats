@@ -12,17 +12,26 @@ export function applyFiltersAndSearch(allRecipes, searchInput, ingredientFilter,
                 recipe.description.toLowerCase().includes(searchQuery) || 
                 recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchQuery));
 
-            const matchesIngredient = selectedIngredient 
-                ? recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(selectedIngredient)) 
-                : true;
+            let matchesIngredient;
+            if (selectedIngredient) {
+                matchesIngredient = recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(selectedIngredient));
+            } else {
+                matchesIngredient = true;
+            }
 
-            const matchesAppliance = selectedAppliance 
-                ? recipe.appliance.toLowerCase() === selectedAppliance 
-                : true;
+            let matchesAppliance;
+            if (selectedAppliance) {
+                matchesAppliance = recipe.appliance.toLowerCase() === selectedAppliance;
+            } else {
+                matchesAppliance = true;
+            }
 
-            const matchesUstensil = selectedUstensil 
-                ? recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(selectedUstensil)) 
-                : true;
+            let matchesUstensil;
+            if (selectedUstensil) {
+                matchesUstensil = recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(selectedUstensil));
+            } else {
+                matchesUstensil = true;
+            }
 
             return matchesSearch && matchesIngredient && matchesAppliance && matchesUstensil;
         });
@@ -31,6 +40,7 @@ export function applyFiltersAndSearch(allRecipes, searchInput, ingredientFilter,
     updateFilters(filteredRecipes, ingredientFilter, applianceFilter, ustensilFilter);
     displayRecipes(filteredRecipes);
 }
+
 
 export function updateFilters(filteredRecipes, ingredientFilter, applianceFilter, ustensilFilter) {
     const ingredientSet = new Set();
