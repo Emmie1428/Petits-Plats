@@ -97,5 +97,35 @@ header h1 {
 
 .text-custom-gray {
     color: #7A7A7A;
-  }
-  
+}
+
+.recipe-content {
+    font-family: "Manrope", sans-serif;
+}
+
+.recipe-description {
+    font-family: "Manrope", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.ingredient-item {
+    font-size: 14px;
+}
+
+.ingredient-item__name {
+    font-weight: 500;
+}
+
+.ingredient-item__quantity {
+    color: #7A7A7A;
+    font-weight: 400;
+}
+
+.recipe-subtitle {
+    letter-spacing: 0.09em;
+}
+
+.tag-label {
+    background: #FFD15B;
+}

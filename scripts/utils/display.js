@@ -1,4 +1,3 @@
-// display.js
 export function displayRecipes(recipes) {
     const recipesContainer = document.querySelector('.recipes-container');
     recipesContainer.innerHTML = ''; // Clear previous results
@@ -32,7 +31,7 @@ export function displayRecipes(recipes) {
         recipeImageContainer.appendChild(recipeTimeBadge);
 
         const recipeContent = document.createElement('div');
-        recipeContent.classList.add('p-4');
+        recipeContent.classList.add('p-4','recipe-content');
 
         const recipeName = document.createElement('h2');
         recipeName.textContent = recipe.name;
@@ -40,22 +39,33 @@ export function displayRecipes(recipes) {
 
         const recipeDescriptionLabel = document.createElement('h3');
         recipeDescriptionLabel.textContent = 'Recette';
-        recipeDescriptionLabel.classList.add('text-custom-gray', 'font-bold', 'text-sm', 'uppercase', 'mb-5');
+        recipeDescriptionLabel.classList.add('recipe-subtitle','text-custom-gray', 'font-bold', 'text-sm', 'uppercase', 'mb-5');
 
         const recipeDescription = document.createElement('p');
         recipeDescription.textContent = recipe.description;
-        recipeDescription.classList.add('text-sm', 'mb-4','line-clamp-4');
+        recipeDescription.classList.add('recipe-description', 'text-sm', 'mb-4', 'line-clamp-4');
 
         const ingredientsLabel = document.createElement('h3');
         ingredientsLabel.textContent = 'Ingrédients';
-        ingredientsLabel.classList.add('text-custom-gray', 'font-bold', 'text-sm', 'uppercase', 'mb-5');
+        ingredientsLabel.classList.add('recipe-subtitle','text-custom-gray', 'font-bold', 'text-sm', 'uppercase', 'mb-5');
 
         const ingredientsList = document.createElement('ul');
         ingredientsList.classList.add('text-sm', 'grid', 'grid-cols-2', 'gap-x-2');
 
         recipe.ingredients.forEach(ingredient => {
             const ingredientItem = document.createElement('li');
-            ingredientItem.textContent = `${ingredient.ingredient} ${ingredient.quantity ? '- ' + ingredient.quantity : ''} ${ingredient.unit ? ingredient.unit : ''}`;
+            ingredientItem.classList.add('ingredient-item', 'mb-5');
+
+            const ingredientName = document.createElement('span');
+            ingredientName.textContent = ingredient.ingredient;
+            ingredientName.classList.add('block','ingredient-item__name');
+
+            const ingredientQuantity = document.createElement('span');
+            ingredientQuantity.textContent = `${ingredient.quantity ? ingredient.quantity : ''} ${ingredient.unit ? ingredient.unit : ''}`;
+            ingredientQuantity.classList.add('block','ingredient-item__quantity');
+
+            ingredientItem.appendChild(ingredientName);
+            ingredientItem.appendChild(ingredientQuantity);
             ingredientsList.appendChild(ingredientItem);
         });
 
