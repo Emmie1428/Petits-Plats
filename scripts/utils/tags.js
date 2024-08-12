@@ -56,4 +56,7 @@ function removeTag(tag, type, tagsContainer, ingredientFilter, applianceFilter, 
 
     // Mise à jour des tags
     updateTags(ingredientFilter, applianceFilter, ustensilFilter, tagsContainer, applyFiltersAndSearch);
+
+    // Appliquer les filtres et mettre à jour l'affichage des recettes
+    applyFiltersAndSearch();  // <- Appel de la fonction pour mettre à jour les résultats
 }
