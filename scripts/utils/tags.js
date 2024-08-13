@@ -1,22 +1,14 @@
-export function updateTags(ingredientFilter, applianceFilter, ustensilFilter, tagsContainer, applyFiltersAndSearch) {
+export function updateTags(selectedTags, tagsContainer, applyFiltersAndSearch) {
     tagsContainer.innerHTML = '';
 
-    const selectedIngredient = ingredientFilter.value;
-    const selectedAppliance = applianceFilter.value;
-    const selectedUstensil = ustensilFilter.value;
-
-    if (selectedIngredient) {
-        createTag(selectedIngredient, 'ingredient', tagsContainer, ingredientFilter, applianceFilter, ustensilFilter, applyFiltersAndSearch);
-    }
-    if (selectedAppliance) {
-        createTag(selectedAppliance, 'appliance', tagsContainer, ingredientFilter, applianceFilter, ustensilFilter, applyFiltersAndSearch);
-    }
-    if (selectedUstensil) {
-        createTag(selectedUstensil, 'ustensil', tagsContainer, ingredientFilter, applianceFilter, ustensilFilter, applyFiltersAndSearch);
-    }
+    Object.keys(selectedTags).forEach(type => {
+        selectedTags[type].forEach(value => {
+            createTag(value, type, tagsContainer, selectedTags, applyFiltersAndSearch);
+        });
+    });
 }
 
-function createTag(value, type, tagsContainer, ingredientFilter, applianceFilter, ustensilFilter, applyFiltersAndSearch) {
+function createTag(value, type, tagsContainer, selectedTags, applyFiltersAndSearch) {
     const tag = document.createElement('span');
     tag.classList.add('tag-label', 'flex', 'items-center', 'rounded', 'p-2', 'text-sm', 'mr-2', 'mb-2');
 
@@ -30,7 +22,7 @@ function createTag(value, type, tagsContainer, ingredientFilter, applianceFilter
     
     // Ajoute l'écouteur pour le clic sur l'icône "x"
     removeIcon.addEventListener('click', () => {
-        removeTag(tag, type, tagsContainer, ingredientFilter, applianceFilter, ustensilFilter, applyFiltersAndSearch);
+        removeTag(type, value, selectedTags, tagsContainer, applyFiltersAndSearch);
     });
 
     tag.appendChild(tagText);
@@ -41,22 +33,19 @@ function createTag(value, type, tagsContainer, ingredientFilter, applianceFilter
     tagsContainer.appendChild(tag);
 }
 
-function removeTag(tag, type, tagsContainer, ingredientFilter, applianceFilter, ustensilFilter, applyFiltersAndSearch) {
+function removeTag(type, value, selectedTags, tagsContainer, applyFiltersAndSearch) {
     // Suppression du tag
-    tagsContainer.removeChild(tag);
-
-    // Mise à jour du filtre correspondant
-    if (type === 'ingredient') {
-        ingredientFilter.value = '';
-    } else if (type === 'appliance') {
-        applianceFilter.value = '';
-    } else if (type === 'ustensil') {
-        ustensilFilter.value = '';
+    selectedTags[type] = selectedTags[type].filter(tag => tag !== value);
+    
+    // Réinitialiser le filtre correspondant s'il n'y a plus de tags pour ce type
+    if (selectedTags[type].length === 0) {
+        const filterElement = document.querySelector(`#${type}-filter`);
+        filterElement.value = '';
     }
-
+    
     // Mise à jour des tags
-    updateTags(ingredientFilter, applianceFilter, ustensilFilter, tagsContainer, applyFiltersAndSearch);
+    updateTags(selectedTags, tagsContainer, applyFiltersAndSearch);
 
     // Appliquer les filtres et mettre à jour l'affichage des recettes
-    applyFiltersAndSearch();  // <- Appel de la fonction pour mettre à jour les résultats
+    applyFiltersAndSearch();
 }
