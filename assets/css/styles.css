@@ -143,3 +143,39 @@ main {
 .tag-label {
     background: #FFD15B;
 }
+
+
+
+/* CSS pour le dropdown personnalisé */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    z-index: 1;
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown.open .dropdown-menu {
+    display: block;
+}

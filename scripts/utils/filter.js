@@ -47,6 +47,9 @@ export function updateFilters(filteredRecipes, selectedTags) {
     populateDropdown(ingredientFilter, Array.from(ingredientSet), selectedTags.ingredient);
     populateDropdown(applianceFilter, Array.from(applianceSet), selectedTags.appliance);
     populateDropdown(ustensilFilter, Array.from(ustensilSet), selectedTags.ustensil);
+
+    // Ajouter les options aux nouveaux dropdowns personnalisés
+    loadDataInDropdowns(Array.from(ingredientSet), Array.from(applianceSet), Array.from(ustensilSet), selectedTags);
 }
 
 function populateDropdown(dropdown, options, selectedTags) {
@@ -62,5 +65,32 @@ function populateDropdown(dropdown, options, selectedTags) {
             optElement.selected = true;
         }
         dropdown.appendChild(optElement);
+    });
+}
+
+function loadDataInDropdowns(ingredientOptions, applianceOptions, ustensilOptions, selectedTags) {
+    const ingredientDropdown = document.querySelector('#ingredient-dropdown .dropdown-menu');
+    const applianceDropdown = document.querySelector('#appliance-dropdown .dropdown-menu');
+    const ustensilDropdown = document.querySelector('#ustensil-dropdown .dropdown-menu');
+
+    populateDropdownMenu(ingredientDropdown, ingredientOptions, selectedTags.ingredient);
+    populateDropdownMenu(applianceDropdown, applianceOptions, selectedTags.appliance);
+    populateDropdownMenu(ustensilDropdown, ustensilOptions, selectedTags.ustensil);
+}
+
+function populateDropdownMenu(dropdownMenu, options, selectedTags) {
+    const selectedValues = new Set(selectedTags);
+
+    dropdownMenu.innerHTML = '';
+
+    options.sort().forEach(option => {
+        const item = document.createElement('div');
+        item.classList.add('dropdown-item');
+        item.dataset.value = option;
+        item.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+        if (selectedValues.has(option)) {
+            item.classList.add('selected');
+        }
+        dropdownMenu.appendChild(item);
     });
 }
