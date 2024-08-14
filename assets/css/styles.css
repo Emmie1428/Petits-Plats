@@ -150,21 +150,25 @@ main {
 .dropdown {
     position: relative;
     display: inline-block;
+    font-family: "Manrope", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    
 }
 
 .dropdown-toggle {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
+    background-color: #fff;
     padding: 10px;
     cursor: pointer;
+    width: 150px;
 }
 
 .dropdown-menu {
     display: none;
     position: absolute;
     background-color: #fff;
-    border: 1px solid #ddd;
     z-index: 1;
+    width: 150px;
 }
 
 .dropdown-item {
@@ -173,9 +177,13 @@ main {
 }
 
 .dropdown-item:hover {
-    background-color: #f0f0f0;
+    background-color: #FFD15B;
 }
 
 .dropdown.open .dropdown-menu {
     display: block;
+}
+
+.dropdown-menu {
+    display: none;
 }
