@@ -4,7 +4,7 @@ import { updateTags } from './utils/tags.js';
 import { displayRecipes } from './utils/display.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const apiUrl = 'data/recipes.JSON';
+    const apiUrl = './data/recipes.JSON';
     let allRecipes = [];
     let selectedTags = {
         ingredient: [],
