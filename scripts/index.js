@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Sélectionner les éléments du DOM
-    const ingredientFilter = document.querySelector('#ingredient-filter');
-    const applianceFilter = document.querySelector('#appliance-filter');
-    const ustensilFilter = document.querySelector('#ustensil-filter');
     const searchInput = document.querySelector('.search-input');
     const tagsContainer = document.querySelector('.tags-container');
 
@@ -25,20 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTags(selectedTags, tagsContainer, updateUI);
     }
 
-    // Fonction pour gérer les modifications des filtres
-    function handleFilterChange(filterType, filterElement) {
-        const value = filterElement.value.toLowerCase();
-        if (value && !selectedTags[filterType].includes(value)) {
-            selectedTags[filterType].push(value);
-            filterElement.value = ''; // Réinitialiser le filtre après ajout
-            updateUI();
-        }
-    }
-
     // Ajouter des écouteurs d'événements
-    ingredientFilter.addEventListener('change', () => handleFilterChange('ingredient', ingredientFilter));
-    applianceFilter.addEventListener('change', () => handleFilterChange('appliance', applianceFilter));
-    ustensilFilter.addEventListener('change', () => handleFilterChange('ustensil', ustensilFilter));
     searchInput.addEventListener('input', updateUI);
 
     // Charger les données et initialiser l'interface utilisateur
@@ -50,7 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fonction pour gérer l'ouverture et la fermeture du dropdown
     function toggleDropdown(dropdown) {
         dropdown.classList.toggle('open');
+
+        const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+
+        if (dropdown.classList.contains('open')) {
+            dropdownToggle.classList.remove('rounded-lg');
+            dropdownToggle.classList.add('rounded-t-lg');
+        } else {
+            dropdownToggle.classList.remove('rounded-t-lg');
+            dropdownToggle.classList.add('rounded-lg');
+        }
     }
+
 
     // Fonction pour gérer la sélection des éléments dans le dropdown
     function handleDropdownSelection(event, selectedTags, filterType, updateUI) {
@@ -77,21 +72,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-
-
-
     // Gestion des clics sur les dropdowns
     document.addEventListener('click', event => {
-        if (event.target.matches('.dropdown-toggle')) {
-            const dropdown = event.target.closest('.dropdown');
+        // Vérifier si le clic est sur le bouton toggle ou l'un de ses enfants
+        const dropdownToggle = event.target.closest('.dropdown-toggle');
+        const dropdown = event.target.closest('.dropdown');
+        const filterInput = event.target.closest('.dropdown-filter-input');
+    
+        if (dropdownToggle) {
+            // Ouvrir/Fermer le dropdown si le bouton toggle est cliqué
             toggleDropdown(dropdown);
         } else if (event.target.matches('.dropdown-item')) {
-            const filterType = event.target.closest('.dropdown').id.split('-')[0];
+            // Logique pour gérer la sélection des éléments dans le dropdown
+            const filterType = dropdown.id.split('-')[0];
             handleDropdownSelection(event, selectedTags, filterType, updateUI);
             document.querySelectorAll('.dropdown').forEach(dropdown => dropdown.classList.remove('open'));
-
-        } else {
+        } else if (!dropdown || !filterInput) {
+            // Fermer tous les dropdowns si le clic est à l'extérieur et pas sur le champ de filtrage
             document.querySelectorAll('.dropdown').forEach(dropdown => dropdown.classList.remove('open'));
         }
     });
+    
+    
 });

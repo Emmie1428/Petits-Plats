@@ -7,11 +7,11 @@ header {
     position: absolute;
     top: 5vh;
     left: 5vh;
-    height: 3%;
+    height: 4%;
 }
 
 .main-image {
-    height: 75vh;
+    height: 65vh;
     width: 100%;
     object-fit: cover;
 }
@@ -86,6 +86,7 @@ header h1 {
 
 main {
     background-color: #EDEDED;
+        padding: 0 50px;
 }
 
 .item-filter {
@@ -99,10 +100,25 @@ main {
 
 .item-filter::-webkit-scrollbar {
     display: none;
-  }
+}
+
+.filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.recipe-count {
+    font-family: "Anton", sans-serif;
+    font-size: 21px;
+    font-weight: 400;
+}
+
 
 .recipe-card h2 {
     font-family: "Anton", sans-serif;
+    height: 40px;
 }
 
 .recipe-time {
@@ -121,6 +137,7 @@ main {
     font-family: "Manrope", sans-serif;
     font-size: 14px;
     font-weight: 400;
+    height: 80px;
 }
 
 .ingredient-item {
@@ -142,9 +159,17 @@ main {
 
 .tag-label {
     background: #FFD15B;
+    height: 56px;
+    min-width: 190px;
+    display: flex;
+    justify-content: space-between;
 }
 
-
+.remove-tag {
+    font-size: 24px;
+    font-weight: 500;
+    padding-bottom: 7px;
+}
 
 /* CSS pour le dropdown personnalisé */
 .dropdown {
@@ -152,15 +177,19 @@ main {
     display: inline-block;
     font-family: "Manrope", sans-serif;
     font-size: 16px;
-    font-weight: 500;
-    
+    font-weight: 500;  
 }
 
 .dropdown-toggle {
     background-color: #fff;
-    padding: 10px;
     cursor: pointer;
-    width: 150px;
+    width: 195px;
+    height: 56px;
+    display:  flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 40px;
+    padding: 15px;
 }
 
 .dropdown-menu {
@@ -168,12 +197,31 @@ main {
     position: absolute;
     background-color: #fff;
     z-index: 1;
-    width: 150px;
+    width: 195px;
+    max-height: 200px; 
+    overflow-y: auto; 
+    -ms-overflow-style: none; 
+    scrollbar-width: none;  
+}
+
+.dropdown-filter-container {
+    width: 88%;
+    margin: auto;
+}
+
+.dropdown-search-icon {
+    width: 15px;
+    height: 15px;
+}
+
+.dropdown-remove-input {
+    font-size: 24px;
 }
 
 .dropdown-item {
-    padding: 10px;
+    padding: 15px;
     cursor: pointer;
+    font-size: 14px;
 }
 
 .dropdown-item:hover {
@@ -187,3 +235,8 @@ main {
 .dropdown-menu {
     display: none;
 }
+
+.hidden {
+    display: none;
+}
+

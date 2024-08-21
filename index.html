@@ -1,9 +1,11 @@
 <!doctype html>
 <html lang="fr">
 <head>
+  <title>Les petits plats</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="./assets/css/styles.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
@@ -16,57 +18,63 @@
         <img class="main-image" src="./assets/images/main/lampos-aritonang-24gR_9lCdes-unsplash.jpg" alt="Image d'un plat sur une table">
         <div class="header-content">
           <h1>
-            CHERCHEZ PARMI PLUS DE 1500 RECETTES</br> 
+            CHERCHEZ PARMI PLUS DE 1500 RECETTES<br> 
             DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES
           </h1>
-          <div class="search-bar rounded-lg">
-            <input type="text" class="search-input" placeholder="Rechercher une recette, un ingrédient...">
+          <form id="search-bar" class="search-bar rounded-lg">
+            <input type="text" class="search-input" id="search-input" placeholder="Rechercher une recette, un ingrédient...">
             <button class="search-button rounded-lg">
               <svg class="search-icon" width="28" height="29" viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="10" cy="10.4219" r="9.5"/>
                 <line x1="18.3536" y1="19.0683" x2="27.3536" y2="28.0683"/>
               </svg>
             </button>
-          </div>
+          </form>
         </div>
     </header>
     <main>
-      <div class="flex space-x-4 p-4">
-        <select id="ingredient-filter" class="item-filter w-48 p-2.5 bg-white border border-gray-300 rounded-md shadow-sm">
-            <!-- Les options sont générées dynamiquement -->
-        </select>
-        
-        <select id="appliance-filter" class="item-filter w-48 p-2.5 bg-white border border-gray-300 rounded-md shadow-sm">
-            <!-- Les options sont générées dynamiquement -->
-        </select>
-        
-        <select id="ustensil-filter" class="item-filter w-48 p-2.5 bg-white border border-gray-300 rounded-md shadow-sm">
-            <!-- Les options sont générées dynamiquement -->
-        </select>
-        <!-- HTML pour le dropdown personnalisé -->
-        <div id="ingredient-dropdown" class="dropdown rounded-md ">
-          <button class="dropdown-toggle">Ingrédients</button>
-          <div class="dropdown-menu">
+
+      <div class="filter-container">                                                                    
+
+        <div class="flex space-x-4 p-4">
+
+          <div id="ingredient-dropdown" class="dropdown">
+            <button class="dropdown-toggle rounded-lg">
+              <span>Ingrédients</span>
+              <span class="fa-solid fa-chevron-down"></span>
+            </button>
+            <div class="dropdown-menu rounded-b-lg">
+            </div>
           </div>
+
+          <div id="appliance-dropdown" class="dropdown">
+            <button class="dropdown-toggle rounded-lg">
+              <span>Appareils</span>
+              <span class="fa-solid fa-chevron-down"></span>
+            </button>
+            <div class="dropdown-menu rounded-b-lg">
+            </div>
+          </div>
+
+          <div id="ustensil-dropdown" class="dropdown">
+            <button class="dropdown-toggle rounded-lg">
+              <span>Ustensiles</span>
+              <span class="fa-solid fa-chevron-down"></span>
+            </button>
+            <div class="dropdown-menu rounded-b-lg">
+            </div>
+          </div>
+
         </div>
 
-        <div id="appliance-dropdown" class="dropdown rounded-md ">
-          <button class="dropdown-toggle">Appareils</button>
-          <div class="dropdown-menu">
-          </div>
-        </div>
+        <div class="recipe-count pr-5"></div>
 
-        <div id="ustensil-dropdown" class="dropdown rounded-md ">
-          <button class="dropdown-toggle">Ustensiles</button>
-          <div class="dropdown-menu">
-          </div>
-        </div>
+    </div>  
 
-      </div>
-      <div class="tags-container flex flex-wrap space-x-2 mt-4 pl-6"></div>
+    <div class="tags-container flex flex-wrap mt-4 pl-5"></div>
 
     
-      <section class="recipes-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6"></section>
+      <div class="recipes-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6"></div>
     </main>
     
     <script type="module" src="scripts/index.js"></script>

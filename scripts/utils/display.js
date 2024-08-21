@@ -3,6 +3,9 @@ export function displayRecipes(recipes) {
     recipesContainer.innerHTML = ''; // Clear previous results
     recipesContainer.classList.add('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'gap-6', 'p-6');
 
+    const recipeCountElement = document.querySelector('.recipe-count');
+    recipeCountElement.textContent = `${recipes.length.toString().padStart(2, '0')} recette${recipes.length > 1 ? 's' : ''}`;
+
     if (recipes.length === 0) {
         const noResultMessage = document.createElement('p');
         noResultMessage.textContent = 'Aucune recette trouvée';
@@ -81,3 +84,4 @@ export function displayRecipes(recipes) {
         recipesContainer.appendChild(recipeCard);
     });
 }
+
