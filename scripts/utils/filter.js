@@ -1,4 +1,4 @@
-export function applyFiltersAndSearch(allRecipes, searchInput, selectedTags, updateFilters, displayRecipes) {
+export function applyFiltersAndSearch2(allRecipes, searchInput, selectedTags, updateFilters, displayRecipes) {
     const searchQuery = searchInput.value.toLowerCase();
     
     let filteredRecipes = allRecipes;
@@ -46,6 +46,98 @@ export function applyFiltersAndSearch(allRecipes, searchInput, selectedTags, upd
     updateFilters(filteredRecipes, selectedTags);
     displayRecipes(filteredRecipes);
 }
+
+export function applyFiltersAndSearch(allRecipes, searchInput, selectedTags, updateFilters, displayRecipes) {
+    const searchQuery = searchInput.value.toLowerCase();
+    let filteredRecipes = [];
+
+    // Appliquer les filtres basés sur les tags
+    for (let i = 0; i < allRecipes.length; i++) {
+        const recipe = allRecipes[i];
+        const ingredientFilterActive = selectedTags.ingredient.length > 0;
+        const applianceFilterActive = selectedTags.appliance.length > 0;
+        const ustensilFilterActive = selectedTags.ustensil.length > 0;
+
+        // Vérifier si la recette correspond aux ingrédients filtrés
+        let ingredientMatch = true;
+        if (ingredientFilterActive) {
+            ingredientMatch = false;
+            for (let j = 0; j < selectedTags.ingredient.length; j++) {
+                const tag = selectedTags.ingredient[j].toLowerCase();
+                for (let k = 0; k < recipe.ingredients.length; k++) {
+                    const ingredient = recipe.ingredients[k].ingredient.toLowerCase();
+                    if (ingredient.includes(tag)) {
+                        ingredientMatch = true;
+                        break;
+                    }
+                }
+                if (!ingredientMatch) break;
+            }
+        }
+
+        // Vérifier si la recette correspond aux appareils filtrés
+        let applianceMatch = true;
+        if (applianceFilterActive) {
+            applianceMatch = false;
+            for (let j = 0; j < selectedTags.appliance.length; j++) {
+                const tag = selectedTags.appliance[j].toLowerCase();
+                if (recipe.appliance.toLowerCase().includes(tag)) {
+                    applianceMatch = true;
+                    break;
+                }
+            }
+        }
+
+        // Vérifier si la recette correspond aux ustensiles filtrés
+        let ustensilMatch = true;
+        if (ustensilFilterActive) {
+            ustensilMatch = false;
+            for (let j = 0; j < selectedTags.ustensil.length; j++) {
+                const tag = selectedTags.ustensil[j].toLowerCase();
+                for (let k = 0; k < recipe.ustensils.length; k++) {
+                    const ustensil = recipe.ustensils[k].toLowerCase();
+                    if (ustensil.includes(tag)) {
+                        ustensilMatch = true;
+                        break;
+                    }
+                }
+                if (!ustensilMatch) break;
+            }
+        }
+
+        // La recette est gardée si elle passe tous les filtres activés
+        if (ingredientMatch && applianceMatch && ustensilMatch) {
+            filteredRecipes.push(recipe);
+        }
+    }
+
+    // Appliquer le filtrage de la recherche si la longueur de la requête est >= 3
+    if (searchQuery.length >= 3) {
+        const searchFilteredRecipes = [];
+        for (let i = 0; i < filteredRecipes.length; i++) {
+            const recipe = filteredRecipes[i];
+            const nameMatch = recipe.name.toLowerCase().includes(searchQuery);
+            const descriptionMatch = recipe.description.toLowerCase().includes(searchQuery);
+            let ingredientSearchMatch = false;
+            for (let j = 0; j < recipe.ingredients.length; j++) {
+                const ingredient = recipe.ingredients[j].ingredient.toLowerCase();
+                if (ingredient.includes(searchQuery)) {
+                    ingredientSearchMatch = true;
+                    break;
+                }
+            }
+            if (nameMatch || descriptionMatch || ingredientSearchMatch) {
+                searchFilteredRecipes.push(recipe);
+            }
+        }
+        filteredRecipes = searchFilteredRecipes;
+    }
+
+    // Mettre à jour les filtres disponibles et afficher les recettes filtrées
+    updateFilters(filteredRecipes, selectedTags);
+    displayRecipes(filteredRecipes);
+}
+
 
 export function updateFilters(filteredRecipes, selectedTags) {
     const ingredientSet = new Set();
