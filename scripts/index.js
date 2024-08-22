@@ -34,17 +34,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fonction pour gérer l'ouverture et la fermeture du dropdown
     function toggleDropdown(dropdown) {
         dropdown.classList.toggle('open');
-
+    
         const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
-
+    
         if (dropdown.classList.contains('open')) {
             dropdownToggle.classList.remove('rounded-lg');
             dropdownToggle.classList.add('rounded-t-lg');
+    
+            // Réinitialiser le défilement au sommet
+            const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+            if (dropdownMenu) {
+                dropdownMenu.scrollTop = 0;
+            }
         } else {
             dropdownToggle.classList.remove('rounded-t-lg');
             dropdownToggle.classList.add('rounded-lg');
         }
     }
+    
 
 
     // Fonction pour gérer la sélection des éléments dans le dropdown

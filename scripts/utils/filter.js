@@ -5,15 +5,33 @@ export function applyFiltersAndSearch(allRecipes, searchInput, selectedTags, upd
 
     // Appliquer les filtres basés sur les tags
     filteredRecipes = filteredRecipes.filter(recipe => {
-        const ingredientMatch = selectedTags.ingredient.length > 0 ? 
-            selectedTags.ingredient.every(tag => recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(tag))) : true;
-        const applianceMatch = selectedTags.appliance.length > 0 ? 
-            selectedTags.appliance.every(tag => recipe.appliance.toLowerCase().includes(tag)) : true;
-        const ustensilMatch = selectedTags.ustensil.length > 0 ? 
-            selectedTags.ustensil.every(tag => recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(tag))) : true;
-
+        const ingredientFilterActive = selectedTags.ingredient.length > 0;
+        const applianceFilterActive = selectedTags.appliance.length > 0;
+        const ustensilFilterActive = selectedTags.ustensil.length > 0;
+    
+        // Vérifier si la recette correspond aux ingrédients filtrés
+        const ingredientMatch = !ingredientFilterActive || selectedTags.ingredient.every(tag => 
+            recipe.ingredients.some(ingredient => 
+                ingredient.ingredient.toLowerCase().includes(tag.toLowerCase())
+            )
+        );
+    
+        // Vérifier si la recette correspond aux appareils filtrés
+        const applianceMatch = !applianceFilterActive || selectedTags.appliance.every(tag => 
+            recipe.appliance.toLowerCase().includes(tag.toLowerCase())
+        );
+    
+        // Vérifier si la recette correspond aux ustensiles filtrés
+        const ustensilMatch = !ustensilFilterActive || selectedTags.ustensil.every(tag => 
+            recipe.ustensils.some(ustensil => 
+                ustensil.toLowerCase().includes(tag.toLowerCase())
+            )
+        );
+    
+        // La recette est gardée si elle passe tous les filtres activés
         return ingredientMatch && applianceMatch && ustensilMatch;
     });
+    
 
     // Appliquer le filtrage de la recherche si la longueur de la requête est >= 3
     if (searchQuery.length >= 3) {
@@ -56,25 +74,24 @@ function loadDataInDropdowns(ingredientOptions, applianceOptions, ustensilOption
 }
 function populateDropdownMenu(dropdownMenu, options, selectedTags) {
     const selectedValues = new Set(selectedTags);
+    dropdownMenu.innerHTML = '';  // Vider le contenu actuel
 
-    dropdownMenu.innerHTML = '';
+    // Créer un fragment pour les options
+    const fragment = document.createDocumentFragment();
 
-    // Conteneur pour le champ de recherche
+    // Créer et ajouter le conteneur de recherche
     const searchContainer = document.createElement('div');
     searchContainer.classList.add('dropdown-filter-container', 'relative', 'mb-2', 'flex', 'items-center', 'border', 'rounded', 'border-gray-300', 'bg-white', 'p-1');
-
-    // Créer et ajouter l'input de recherche
+    
     const searchInput = document.createElement('input');
     searchInput.type = 'text';
     searchInput.classList.add('dropdown-filter-input', 'w-full', 'px-2', 'py-1', 'text-sm', 'outline-none');
-
-    // Bouton pour effacer le texte du filtre
+    
     const clearButton = document.createElement('button');
     clearButton.type = 'button';
     clearButton.innerHTML = '&times;';
-    clearButton.classList.add('dropdown-remove-input', 'absolute', 'right-8', 'text-custom-gray', 'hover:text-black', 'focus:outline-none', 'cursor-pointer', 'hidden'); // Par défaut caché
+    clearButton.classList.add('dropdown-remove-input', 'absolute', 'right-8', 'text-custom-gray', 'hover:text-black', 'focus:outline-none', 'cursor-pointer', 'hidden');
     
-    // Icône de recherche
     const searchIcon = document.createElement('span');
     searchIcon.innerHTML = `
         <svg class="dropdown-search-icon text-custom-gray" viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -84,30 +101,35 @@ function populateDropdownMenu(dropdownMenu, options, selectedTags) {
     `;
     searchIcon.classList.add('absolute', 'right-2', 'text-gray-400');
 
-    // Ajouter les éléments dans le conteneur
     searchContainer.appendChild(searchInput);
     searchContainer.appendChild(clearButton);
     searchContainer.appendChild(searchIcon);
-    dropdownMenu.appendChild(searchContainer);
+    fragment.appendChild(searchContainer);
+
+    // Ajouter les options
+    options.sort().forEach(option => {
+        const item = document.createElement('div');
+        item.classList.add('dropdown-item');
+        item.dataset.value = option;
+        item.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+        if (selectedValues.has(option)) {
+            item.classList.add('selected');
+        }
+        fragment.appendChild(item);
+    });
+
+    dropdownMenu.appendChild(fragment);
 
     // Fonction pour filtrer les options et gérer la visibilité du bouton clear
     function filterOptions() {
         const filterValue = searchInput.value.toLowerCase();
         dropdownMenu.querySelectorAll('.dropdown-item').forEach(item => {
             const text = item.textContent.toLowerCase();
-            if (text.includes(filterValue)) {
-                item.style.display = '';  // Afficher l'élément
-            } else {
-                item.style.display = 'none';  // Masquer l'élément
-            }
+            item.style.display = text.includes(filterValue) ? '' : 'none';
         });
 
         // Gérer la visibilité du bouton clear
-        if (filterValue.trim() === '') {
-            clearButton.classList.add('hidden');
-        } else {
-            clearButton.classList.remove('hidden');
-        }
+        clearButton.classList.toggle('hidden', filterValue.trim() === '');
     }
 
     // Ajouter un écouteur pour le bouton d'effacement
@@ -119,17 +141,6 @@ function populateDropdownMenu(dropdownMenu, options, selectedTags) {
 
     // Écouteur pour filtrer les éléments lorsque l'utilisateur tape
     searchInput.addEventListener('input', filterOptions);
-
-    // Ajouter les options dans le dropdown
-    options.sort().forEach(option => {
-        const item = document.createElement('div');
-        item.classList.add('dropdown-item');
-        item.dataset.value = option;
-        item.textContent = option.charAt(0).toUpperCase() + option.slice(1);
-        if (selectedValues.has(option)) {
-            item.classList.add('selected');
-        }
-        dropdownMenu.appendChild(item);
-    });
 }
+
 
