@@ -93,13 +93,7 @@ main {
     font-family: "Manrope", sans-serif;
     font-size: 16px;
     font-weight: 500;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
     width: 150px;
-}
-
-.item-filter::-webkit-scrollbar {
-    display: none;
 }
 
 .filter-container {
@@ -201,7 +195,7 @@ main {
     max-height: 225px; 
     overflow-y: auto; 
     -ms-overflow-style: none; 
-    scrollbar-width: none;  
+    
 }
 
 .dropdown-filter-container {
