@@ -1,5 +1,6 @@
-export function applyFiltersAndSearch2(allRecipes, searchInput, selectedTags, updateFilters, displayRecipes) {
+export function applyFiltersAndSearch(allRecipes, searchInput, selectedTags, updateFilters, displayRecipes) {
     const searchQuery = searchInput.value.toLowerCase();
+    console.log(searchQuery);
     
     let filteredRecipes = allRecipes;
 
@@ -44,11 +45,12 @@ export function applyFiltersAndSearch2(allRecipes, searchInput, selectedTags, up
 
     // Mettre à jour les filtres disponibles et afficher les recettes filtrées
     updateFilters(filteredRecipes, selectedTags);
-    displayRecipes(filteredRecipes);
+    displayRecipes(filteredRecipes,searchQuery);
 }
 
-export function applyFiltersAndSearch(allRecipes, searchInput, selectedTags, updateFilters, displayRecipes) {
+export function applyFiltersAndSearch2(allRecipes, searchInput, selectedTags, updateFilters, displayRecipes) {
     const searchQuery = searchInput.value.toLowerCase();
+    console.log(searchQuery);
     let filteredRecipes = [];
 
     // Appliquer les filtres basés sur les tags

@@ -1,4 +1,4 @@
-export function displayRecipes(recipes) {
+export function displayRecipes(recipes,searchQuery) {
     const recipesContainer = document.querySelector('.recipes-container');
     recipesContainer.innerHTML = ''; // Clear previous results
     recipesContainer.classList.add('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'gap-6', 'p-6');
@@ -8,7 +8,7 @@ export function displayRecipes(recipes) {
 
     if (recipes.length === 0) {
         const noResultMessage = document.createElement('p');
-        noResultMessage.textContent = 'Aucune recette trouvée';
+        noResultMessage.textContent = `Aucune recette ne contient « ${searchQuery} » vous pouvez chercher « tarte aux pommes », « poisson », etc.`;
         noResultMessage.classList.add('text-center', 'text-gray-500', 'w-full', 'col-span-3');
         recipesContainer.appendChild(noResultMessage);
         return;

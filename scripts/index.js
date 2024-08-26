@@ -34,12 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fonction pour gérer l'ouverture et la fermeture du dropdown
     function toggleDropdown(dropdown) {
         dropdown.classList.toggle('open');
-    
+        
         const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
-    
+        const chevronDown = dropdownToggle.querySelector('.fa-chevron-down');
+        const chevronUp = dropdownToggle.querySelector('.fa-chevron-up');
+        
         if (dropdown.classList.contains('open')) {
             dropdownToggle.classList.remove('rounded-lg');
             dropdownToggle.classList.add('rounded-t-lg');
+    
+            // Afficher le chevron-up et masquer le chevron-down
+            chevronDown.classList.add('hidden');
+            chevronUp.classList.remove('hidden');
     
             // Réinitialiser le défilement au sommet
             const dropdownMenu = dropdown.querySelector('.dropdown-menu');
@@ -49,10 +55,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             dropdownToggle.classList.remove('rounded-t-lg');
             dropdownToggle.classList.add('rounded-lg');
+    
+            // Masquer le chevron-up et afficher le chevron-down
+            chevronDown.classList.remove('hidden');
+            chevronUp.classList.add('hidden');
         }
     }
-    
-
 
     // Fonction pour gérer la sélection des éléments dans le dropdown
     function handleDropdownSelection(event, selectedTags, filterType, updateUI) {
@@ -83,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const filterType = dropdown.id.split('-')[0];
             handleDropdownSelection(event, selectedTags, filterType, updateUI);
             document.querySelectorAll('.dropdown').forEach(dropdown => dropdown.classList.remove('open'));
+            console.log(filterType)
         } else if (!dropdown || !filterInput) {
             // Fermer tous les dropdowns si le clic est à l'extérieur et pas sur le champ de filtrage
             document.querySelectorAll('.dropdown').forEach(dropdown => dropdown.classList.remove('open'));
