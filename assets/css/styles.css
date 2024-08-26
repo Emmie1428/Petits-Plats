@@ -6,8 +6,9 @@ header {
 .logo {
     position: absolute;
     top: 5vh;
-    left: 5vh;
+    left: 5vw;
     height: 4%;
+    max-width: 90%;
 }
 
 .main-image {
@@ -86,7 +87,7 @@ header h1 {
 
 main {
     background-color: #EDEDED;
-        padding: 0 50px;
+    padding: 0 50px;
 }
 
 .item-filter {
@@ -107,6 +108,7 @@ main {
     font-family: "Anton", sans-serif;
     font-size: 21px;
     font-weight: 400;
+    margin-left: auto; 
 }
 
 

@@ -1,10 +1,11 @@
 import { fetchData } from './utils/fetchData.js';
-import { applyFiltersAndSearch, updateFilters } from './utils/filter.js';
+import { applyFiltersAndSearch } from './utils/filter.js';
 import { updateTags } from './utils/tags.js';
+import { setupDropdownListeners } from './utils/dropdown.js';
 import { displayRecipes } from './utils/display.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const apiUrl = './data/recipes.json';
+    const recipesData = './data/recipes.json';
     let allRecipes = [];
     let selectedTags = {
         ingredient: [],
@@ -12,93 +13,32 @@ document.addEventListener('DOMContentLoaded', () => {
         ustensil: []
     };
 
-    // Sélectionner les éléments du DOM
     const searchInput = document.querySelector('.search-input');
     const tagsContainer = document.querySelector('.tags-container');
 
-    // Fonction pour mettre à jour l'interface utilisateur
     function updateUI() {
-        applyFiltersAndSearch(allRecipes, searchInput, selectedTags, updateFilters, displayRecipes);
+        const hasTags = selectedTags.ingredient.length > 0 || selectedTags.appliance.length > 0 || selectedTags.ustensil.length > 0;
+        const filteredRecipes = applyFiltersAndSearch(allRecipes, searchInput, selectedTags);
         updateTags(selectedTags, tagsContainer, updateUI);
+        displayRecipes(filteredRecipes, searchInput.value, hasTags);
     }
 
-    // Ajouter des écouteurs d'événements
-    searchInput.addEventListener('input', updateUI);
+    function initialize() {
+        fetchData(recipesData).then(recipes => {
+            allRecipes = recipes;
+            updateUI();
+        });
 
-    // Charger les données et initialiser l'interface utilisateur
-    fetchData(apiUrl).then(recipes => {
-        allRecipes = recipes;
-        updateUI(); // Appel initial pour afficher les recettes et les tags
-    });
-
-    // Fonction pour gérer l'ouverture et la fermeture du dropdown
-    function toggleDropdown(dropdown) {
-        dropdown.classList.toggle('open');
-        
-        const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
-        const chevronDown = dropdownToggle.querySelector('.fa-chevron-down');
-        const chevronUp = dropdownToggle.querySelector('.fa-chevron-up');
-        
-        if (dropdown.classList.contains('open')) {
-            dropdownToggle.classList.remove('rounded-lg');
-            dropdownToggle.classList.add('rounded-t-lg');
-    
-            // Afficher le chevron-up et masquer le chevron-down
-            chevronDown.classList.add('hidden');
-            chevronUp.classList.remove('hidden');
-    
-            // Réinitialiser le défilement au sommet
-            const dropdownMenu = dropdown.querySelector('.dropdown-menu');
-            if (dropdownMenu) {
-                dropdownMenu.scrollTop = 0;
-            }
-        } else {
-            dropdownToggle.classList.remove('rounded-t-lg');
-            dropdownToggle.classList.add('rounded-lg');
-    
-            // Masquer le chevron-up et afficher le chevron-down
-            chevronDown.classList.remove('hidden');
-            chevronUp.classList.add('hidden');
-        }
+        setupEventListeners();
     }
 
-    // Fonction pour gérer la sélection des éléments dans le dropdown
-    function handleDropdownSelection(event, selectedTags, filterType, updateUI) {
-        const item = event.target;
-    
-        if (item.classList.contains('dropdown-item')) {
-            const value = item.dataset.value;
-    
-            if (!selectedTags[filterType].includes(value)) {
-                selectedTags[filterType].push(value);
-                updateUI(); // Met à jour l'interface utilisateur après la sélection
-            }
-        }
+    function setupEventListeners() {
+        searchInput.addEventListener('input', updateUI);
+        setupDropdownListeners(selectedTags, updateUI);
+        document.getElementById('search-button').addEventListener('click', function(event) {
+            event.preventDefault();
+        });
     }
-    
-    // Gestion des clics sur les dropdowns
-    document.addEventListener('click', event => {
-        // Vérifier si le clic est sur le bouton toggle ou l'un de ses enfants
-        const dropdownToggle = event.target.closest('.dropdown-toggle');
-        const dropdown = event.target.closest('.dropdown');
-        const filterInput = event.target.closest('.dropdown-filter-input');
-    
-        if (dropdownToggle) {
-            // Ouvrir/Fermer le dropdown si le bouton toggle est cliqué
-            toggleDropdown(dropdown);
-        } else if (event.target.matches('.dropdown-item')) {
-            // Logique pour gérer la sélection des éléments dans le dropdown
-            const filterType = dropdown.id.split('-')[0];
-            handleDropdownSelection(event, selectedTags, filterType, updateUI);
-            document.querySelectorAll('.dropdown').forEach(dropdown => dropdown.classList.remove('open'));
-            console.log(filterType)
-        } else if (!dropdown || !filterInput) {
-            // Fermer tous les dropdowns si le clic est à l'extérieur et pas sur le champ de filtrage
-            document.querySelectorAll('.dropdown').forEach(dropdown => dropdown.classList.remove('open'));
-        }
-    });
-    
-    document.getElementById('search-button').addEventListener('click', function(event) {
-        event.preventDefault(); // Empêche le comportement par défaut du bouton
-    });
+
+    initialize();
 });
