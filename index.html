@@ -32,52 +32,53 @@
           </form>
         </div>
     </header>
-    <main p-5>
+    <main>
+      <div class="main-content p-5">
+        <div class="filter-container flex-wrap">                                                                    
 
-      <div class="filter-container flex-wrap">                                                                    
+          <div class="flex flex-wrap pt-4">
 
-        <div class="flex flex-wrap pt-4">
-
-          <div id="ingredient-dropdown" class="dropdown">
-            <button class="dropdown-toggle mb-4 rounded-lg">
-              <span>Ingrédients</span>
-              <span class="fa-solid fa-chevron-down"></span>
-              <span class="fa-solid fa-chevron-up hidden"></span>
-            </button>
-            <div class="dropdown-menu rounded-b-lg">
+            <div id="ingredient-dropdown" class="dropdown">
+              <button class="dropdown-toggle mb-4 rounded-lg">
+                <span>Ingrédients</span>
+                <span class="fa-solid fa-chevron-down"></span>
+                <span class="fa-solid fa-chevron-up hidden"></span>
+              </button>
+              <div class="dropdown-menu rounded-b-lg">
+              </div>
             </div>
+
+            <div id="appliance-dropdown" class="dropdown">
+              <button class="dropdown-toggle mb-4 rounded-lg">
+                <span>Appareils</span>
+                <span class="fa-solid fa-chevron-down"></span>
+                <span class="fa-solid fa-chevron-up hidden"></span>
+              </button>
+              <div class="dropdown-menu rounded-b-lg">
+              </div>
+            </div>
+
+            <div id="ustensil-dropdown" class="dropdown">
+              <button class="dropdown-toggle mb-4 rounded-lg">
+                <span>Ustensiles</span>
+                <span class="fa-solid fa-chevron-down"></span>
+                <span class="fa-solid fa-chevron-up hidden"></span>
+              </button>
+              <div class="dropdown-menu rounded-b-lg">
+              </div>
+            </div>
+
           </div>
 
-          <div id="appliance-dropdown" class="dropdown">
-            <button class="dropdown-toggle mb-4 rounded-lg">
-              <span>Appareils</span>
-              <span class="fa-solid fa-chevron-down"></span>
-              <span class="fa-solid fa-chevron-up hidden"></span>
-            </button>
-            <div class="dropdown-menu rounded-b-lg">
-            </div>
-          </div>
+          <div class="recipe-count pr-5"></div>
 
-          <div id="ustensil-dropdown" class="dropdown">
-            <button class="dropdown-toggle mb-4 rounded-lg">
-              <span>Ustensiles</span>
-              <span class="fa-solid fa-chevron-down"></span>
-              <span class="fa-solid fa-chevron-up hidden"></span>
-            </button>
-            <div class="dropdown-menu rounded-b-lg">
-            </div>
-          </div>
+        </div>  
 
-        </div>
+        <div class="tags-container flex flex-wrap mt-4 mb-3"></div>
 
-        <div class="recipe-count pr-5"></div>
-
-    </div>  
-
-    <div class="tags-container flex flex-wrap mt-4 mb-3"></div>
-
-    
-      <div class="recipes-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-5"></div>
+      
+        <div class="recipes-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-5"></div>
+      </div>
     </main>
     
     <script type="module" src="scripts/index.js"></script>
