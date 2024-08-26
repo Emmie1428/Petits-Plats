@@ -200,7 +200,7 @@ main {
 
 .dropdown-filter-container {
     width: 88%;
-    margin: auto;
+    margin: auto auto 10px auto;
 }
 
 .dropdown-search-icon {
