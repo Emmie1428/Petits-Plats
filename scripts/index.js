@@ -64,17 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!selectedTags[filterType].includes(value)) {
                 selectedTags[filterType].push(value);
                 updateUI(); // Met à jour l'interface utilisateur après la sélection
-    
-                // Trouver le parent .dropdown de l'élément cliqué
-                const dropdown = item.closest('.dropdown');
-    
-                // Vérifier si le parent .dropdown est trouvé et le fermer
-                if (dropdown && dropdown.classList.contains('open')) {
-                    dropdown.classList.remove('open');
-                    console.log("Dropdown fermé :", dropdown);  // Ajout d'un log pour vérifier que le bon élément est ciblé
-                } else {
-                    console.log("Aucun dropdown trouvé ou il est déjà fermé");
-                }
             }
         }
     }
