@@ -2,7 +2,7 @@ export function applyFiltersAndSearch(allRecipes, searchInput, selectedTags) {
     const searchQuery = searchInput.value.toLowerCase();
     const filteredRecipes = filterAndSearchRecipes(allRecipes, searchQuery, selectedTags);
     updateFilters(filteredRecipes, selectedTags);
-    return filteredRecipes; // On retourne les recettes filtrées pour pouvoir les utiliser ailleurs
+    return filteredRecipes;
 }
 
 function filterAndSearchRecipes(recipes, searchQuery, selectedTags) {
