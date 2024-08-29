@@ -1,14 +1,30 @@
 export function applyFiltersAndSearch(allRecipes, searchInput, selectedTags) {
     const searchQuery = searchInput.value.toLowerCase();
-    const filteredRecipes = filterAndSearchRecipes(allRecipes, searchQuery, selectedTags);
+    const filteredRecipes = filterAndSearchRecipesWithLoops(allRecipes, searchQuery, selectedTags);
     updateFilters(filteredRecipes, selectedTags);
     return filteredRecipes;
 }
 
-function filterAndSearchRecipes(recipes, searchQuery, selectedTags) {
+function filterAndSearchRecipesWithLoops(recipes, searchQuery, selectedTags) {
     let filteredRecipes = filterRecipesByTags(recipes, selectedTags);
-    filteredRecipes = filterRecipesBySearchQuery(filteredRecipes, searchQuery);
+    filteredRecipes = filterRecipesBySearchQueryWithLoops(filteredRecipes, searchQuery);
     return filteredRecipes;
+}
+
+function filterRecipesBySearchQueryWithLoops(recipes, searchQuery) {
+    if (searchQuery.length < 3) return recipes;
+
+    // Implémentation de recherche avec des boucles
+    return recipes.filter(recipe => {
+        const lowerCaseSearchQuery = searchQuery.toLowerCase();
+        const inName = recipe.name.toLowerCase().includes(lowerCaseSearchQuery);
+        const inDescription = recipe.description.toLowerCase().includes(lowerCaseSearchQuery);
+        const inIngredients = recipe.ingredients.some(ingredient => 
+            ingredient.ingredient.toLowerCase().includes(lowerCaseSearchQuery)
+        );
+        
+        return inName || inDescription || inIngredients;
+    });
 }
 
 function filterRecipesByTags(recipes, selectedTags) {
@@ -37,16 +53,6 @@ function isRecipeMatchingAllTags(recipe, selectedTags) {
     );
 
     return ingredientMatch && applianceMatch && ustensilMatch;
-}
-
-function filterRecipesBySearchQuery(recipes, searchQuery) {
-    if (searchQuery.length < 3) return recipes;
-
-    return recipes.filter(recipe => {
-        return recipe.name.toLowerCase().includes(searchQuery) ||
-               recipe.description.toLowerCase().includes(searchQuery) ||
-               recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchQuery));
-    });
 }
 
 export function updateFilters(filteredRecipes, selectedTags) {
