@@ -19,7 +19,7 @@ function recipesTemplate (data) {
         // Création titre
         const recipeName = document.createElement("h2");
         recipeName.textContent = name;
-        recipeName.classList.add("recipeName");
+        recipeName.classList.add("recipeNamse");
         
         //Création titre description
         const descriptionTitle = document.createElement("h3");
@@ -63,3 +63,4 @@ function recipesTemplate (data) {
     return { id, name, servings, ingredients, time, description, appliance, ustensils, getRecipeCardDOM };
 }
 
+export default recipesTemplate;
