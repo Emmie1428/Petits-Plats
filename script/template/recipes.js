@@ -7,7 +7,7 @@ function recipesTemplate (data) {
 
         // Création image
         const imgRecipe = document.createElement("img");
-        imgRecipe.setAttribute("src", `assets/recipes/${data.image}`);
+        imgRecipe.setAttribute("src", `assets/${data.image}`);
         imgRecipe.setAttribute("alt", `Image de la recette ${name}`);
         imgRecipe.classList.add("imgRecipe");
 
@@ -19,7 +19,7 @@ function recipesTemplate (data) {
         // Création titre
         const recipeName = document.createElement("h2");
         recipeName.textContent = name;
-        recipeName.classList.add("recipeNamse");
+        recipeName.classList.add("recipeName");
         
         //Création titre description
         const descriptionTitle = document.createElement("h3");
@@ -33,15 +33,15 @@ function recipesTemplate (data) {
 
         //Création titre liste des ingrédients
         const ingredientsTitle = document.createElement("h3");
-        descriptionTitle.textContent = "Ingrédients";
-        descriptionTitle.classList.add("recipeSubTitle");
+        ingredientsTitle.textContent = "Ingrédients";
+        ingredientsTitle.classList.add("recipeSubTitle");
 
         // Création liste des ingrédients
         const ingredientsList = document.createElement("ul");
         ingredients.forEach(ingredient => {
             const signleIngredient = document.createElement("li");
             signleIngredient.textContent = `${ingredient}: ${ingredient.quantity || ""} ${ingredient.unit || ""}`;
-            ingredientsList.appendChild(li);
+            ingredientsList.appendChild(signleIngredient);
             signleIngredient.classList.add("singeIngredient");
             ingredientsList.classList.add("ingredientsList");
         });

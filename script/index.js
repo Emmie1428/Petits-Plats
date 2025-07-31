@@ -1,11 +1,9 @@
-import recipesTemplate from "./template/recipes";
-
-
+import recipesTemplate from "/script/template/recipes.js";
 
 //Récupération des recettes
 async function getRecipe() {
     try {
-        const response = await fetch("./recipes.json");
+        const response = await fetch("/recipes.json");
         const data = await response.json();
         return {recipes: data.recipes};
     } catch (error) {
