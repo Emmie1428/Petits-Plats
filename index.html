@@ -1,29 +1,41 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="self-center  m-0 p-0 w--full h-full">
 <head>
   <title>Les Petits Plats</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="/style.css" rel="stylesheet">
+  <link href="/src/output.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
   <!--<link rel="stylesheet" href="style.css"> -->
 </head>
-<body>
-  <header>
-    <img src="assets/Logo.png" alt="Logo Les Petits Plats">
-    <img src="assets/arrie-plan.jpg" alt="">
-    <h1>CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES</h1>
+<body class="container self-center justify-self-center m-0 p-0 w--full h-full">
+  <header class="grid flex-col container">
+    <img class="z-10 absolute left-30 top-10" src="assets/Logo.png" alt="Logo Les Petits Plats">
+    <img class="head_background z-0 object-cover" src="assets/arrie-plan.jpg" alt="">
+    <h1 class="anton-regular yellow-title absolute z-10 self-center ">CHERCHEZ PARMI PLUS DE 1500 RECETTES <br>DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES</h1>
     <div class="search-bar">
       <input type="search" placeholder="Rechercher une recette, un ingrédient, ..." name="search-bar">
       <input type="submit" value=""> <!-- Ajout de la loupe dans le champ du seach-bar -->
     </div>
   </header>
   <main>
-    <section class="filters">
+    <section class="filters container">
       <!-- 3 listes déroulantes (Ingrédients / Appareils / Ustensils) -->
        <p>150 recettes</p>
     </section>
-    <section class="recipe_section">
-  
+    <section class="recipe_section grid grid-cols-3 container">
+      <card class="recipeCard w-96">
+        <img class="imgRecipe h-64 w-96 object-cover rounded-t-3xl">
+        <p class="recipeTime"></p>
+        <h2 class="recipeName anton-regular txt-lg"></h2>
+        <h3 class="descriptionTitle">Recette</h3>
+        <p class="recipeDescription"></p>
+        <h3 class="ingredientsTitle">Ingrédients</h3>
+        <ul class="ingredientsList"></ul>
+      </card>
     </section>
   </main>
   <script type="module">

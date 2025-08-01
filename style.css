@@ -1,1 +1,25 @@
 @import "tailwindcss";
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+.anton-regular {
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.yellow-title {
+    color: #FFD15B;
+    font-size: 44px;
+}
+
+.head_background {
+    max-height: 667px;
+    max-width: 1440px;
+    width: 1440px;
+}
+
+.recipe_section{
+    background-color: #EDEDED;
+}

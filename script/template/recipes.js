@@ -1,63 +1,45 @@
-//Création cards recettes
+//Liaison entre les données de recipes.json et le DOM
 function recipesTemplate (data) {
     const { id, name, servings, ingredients, time, description, appliance, ustensils } = data;
 
     function getRecipeCardDOM() {
-        const article = document.createElement("article");
+        const card = document.querySelector(".recipeCard").cloneNode(true);
 
-        // Création image
-        const imgRecipe = document.createElement("img");
+        // Affichage image
+        const imgRecipe = card.querySelector(".imgRecipe");
         imgRecipe.setAttribute("src", `assets/${data.image}`);
-        imgRecipe.setAttribute("alt", `Image de la recette ${name}`);
-        imgRecipe.classList.add("imgRecipe");
+        imgRecipe.setAttribute("alt", `Recette de ${name}`);
 
-        // Création du temps de préparation
-        const recipeTime = document.createElement("p");
+        // Affichage du temps de préparation
+        const recipeTime = card.querySelector(".recipeTime");
         recipeTime.textContent = `${time} min`;
-        recipeTime.classList.add("recipeTime");
 
-        // Création titre
-        const recipeName = document.createElement("h2");
+        // Affichage titre
+        const recipeName = card.querySelector(".recipeName");
         recipeName.textContent = name;
-        recipeName.classList.add("recipeName");
-        
-        //Création titre description
-        const descriptionTitle = document.createElement("h3");
-        descriptionTitle.textContent = "Recette";
-        descriptionTitle.classList.add("recipeSubTitle");
 
-        // Création description
-        const recipeDescription = document.createElement("p");
+        // Affichage description
+        const recipeDescription = card.querySelector(".recipeDescription");
         recipeDescription.textContent = description;
-        recipeDescription.classList.add("recipeDescription");
 
-        //Création titre liste des ingrédients
-        const ingredientsTitle = document.createElement("h3");
-        ingredientsTitle.textContent = "Ingrédients";
-        ingredientsTitle.classList.add("recipeSubTitle");
-
-        // Création liste des ingrédients
-        const ingredientsList = document.createElement("ul");
-        ingredients.forEach(ingredient => {
+        // Affichage liste des ingrédients
+        const ingredientsList = card.querySelector(".ingredientsList");
+        ingredients.forEach(ingredients => {
             const signleIngredient = document.createElement("li");
-            signleIngredient.textContent = `${ingredient}: ${ingredient.quantity || ""} ${ingredient.unit || ""}`;
+            signleIngredient.classList.add("singleIngredient");
+            // Création du texte de l'ingrédient
+            let text = ingredients.ingredient;
+            if (ingredients.quantity) {
+                text += `: ${ingredients.quantity}`;
+                if (ingredients.unit) {
+                    text += ` ${ingredients.unit}`;
+                }
+            }
+            signleIngredient.textContent = text;
             ingredientsList.appendChild(signleIngredient);
-            signleIngredient.classList.add("singeIngredient");
-            ingredientsList.classList.add("ingredientsList");
         });
 
-
-        // Liaison éléments à l'article
-        article.appendChild(imgRecipe);
-        article.appendChild(recipeTime);
-        article.appendChild(recipeName);
-        article.appendChild(descriptionTitle);
-        article.appendChild(recipeDescription);
-        article.appendChild(ingredientsTitle);
-        article.appendChild(ingredientsList);
-        
-
-        return article;
+        return card;
     }
 
     return { id, name, servings, ingredients, time, description, appliance, ustensils, getRecipeCardDOM };
