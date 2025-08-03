@@ -27,16 +27,29 @@ function recipesTemplate (data) {
         ingredients.forEach(ingredients => {
             const signleIngredient = document.createElement("li");
             signleIngredient.classList.add("singleIngredient");
-            // Création du texte de l'ingrédient
-            let text = ingredients.ingredient;
+
+            // Création span pour le nom de l'ingrédient  
+            const ingredientName = document.createElement("span");
+            ingredientName.classList.add("ingredientName");
+            ingredientName.textContent = ingredients.ingredient;
+
+            //Création du span pour la quantité et l'unité de l'ingrédient
+            const quantityAndUnit = document.createElement("span");
+            quantityAndUnit.classList.add("quantityAndUnit");
+
+            // Quantité et if unité
             if (ingredients.quantity) {
-                text += `: ${ingredients.quantity}`;
+                quantityAndUnit.textContent = `${ingredients.quantity}`;
                 if (ingredients.unit) {
-                    text += ` ${ingredients.unit}`;
+                    quantityAndUnit.textContent += `${ingredients.unit}`;
                 }
             }
-            signleIngredient.textContent = text;
+
+            signleIngredient.appendChild(ingredientName);
+            signleIngredient.appendChild(quantityAndUnit);
+
             ingredientsList.appendChild(signleIngredient);
+
         });
 
         return card;
