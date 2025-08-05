@@ -4,6 +4,7 @@ function recipesTemplate (data) {
 
     function getRecipeCardDOM() {
         const card = document.querySelector(".recipeCard").cloneNode(true);
+        card.classList.remove("hidden");
 
         // Affichage image
         const imgRecipe = card.querySelector(".imgRecipe");

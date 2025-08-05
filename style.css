@@ -2,6 +2,7 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
+@import "/src/output.css";
 
 /*Font stryles*/
 .anton-font {
@@ -20,6 +21,7 @@
 
 
 body {
+    max-width: 1440px;
     width: 100%;
 }
 
@@ -43,6 +45,39 @@ h1 {
 .head_background {
     max-height: 667px;
     max-width: 1440px;
+    width: 100%;
+}
+
+.search-bar {
+    width: 934px;
+    height: 72px;
+    border-radius: 11px;
+    place-self: center;
+    margin-top: 250px;
+    display: flex;
+}
+
+.searchSpace {
+    width: 934px;
+    height: 72px;
+    padding-left: 35px;
+    outline: none;
+}
+
+.searchButton {
+    width: 52px;
+    height: 52px;
+    font-weight: 100;
+    background-color: black;
+    color:white;
+    border-radius: 11px;
+    padding: 5px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.searchButton:hover {
+    background-color: color-mix(in srgb, #FFD15B 80%, #7E631D);
 }
 
 .recipe_section {
@@ -58,6 +93,7 @@ h1 {
     border-radius: 21px;
     box-shadow: 0px 4px 34px rgba(0, 0, 0, 0.40);
     position: relative;
+    
 }
 
 .imgRecipe {
