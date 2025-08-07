@@ -1,4 +1,7 @@
+import initTri from "./utils/tri.js";  
 import recipesTemplate from "/script/template/recipes.js";
+
+initTri();
 
 //Récupération des recettes
 async function getRecipe() {
