@@ -15,16 +15,24 @@
   font-family: "Manrope", sans-serif;
 }
 
+/*Color*/
 .dark-yellow {
     color: color-mix(in srgb, #FFD15B 80%, #7E631D);
+} 
+
+/*General styles*/
+.hidden {
+    display: none !important;
 }
 
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
 
 body {
     max-width: 1440px;
     width: 100%;
 }
-
 
 section {
     max-width: 1440px;
@@ -32,6 +40,7 @@ section {
     background-color: #EDEDED;
 }
 
+/*Header styles*/
 h1 {
     font-size: 44px;
     justify-self: anchor-center;
@@ -49,7 +58,7 @@ h1 {
     width: 100%;
 }
 
-.search-bar {
+.searchBar {
     width: 954px;
     height: 72px;
     border-radius: 11px;
@@ -63,16 +72,22 @@ h1 {
     height: 72px;
     padding-left: 35px;
     outline: none;
+    color: #7A7A7A;
+}
+
+.searchBar .fa-xmark {
+    height: 13px;
+    padding-right: 24px;
+    color: #7A7A7A;
+    place-self: center;
 }
 
 .searchButton {
     width: 52px;
     height: 52px;
-    font-weight: 100;
     background-color: black;
     color:white;
     border-radius: 11px;
-    padding: 5px;
     margin: 10px;
     cursor: pointer;
 }
@@ -81,15 +96,103 @@ h1 {
     background-color: color-mix(in srgb, #FFD15B 80%, #7E631D);
 }
 
-.searchButton svg:hover{
+.searchButton .fa-magnifying-glass {
+    font-size: 27px;
+    width: 50px;
+    height: 50px;
+    display: contents;
+}
+
+.searchButton .fa-magnifying-glass i:hover{
     filter: invert(1);
 }
 
+/*Tags styles*/
+
+.filters {
+    width: 100%;
+    padding: 21px 100px 0;
+    display: flex;
+    column-gap: 66px;
+}
+
+.tagLists {
+    width: 195px;
+    padding: 16px;
+    border-radius: 11px;
+    font-size: 14px;
+}
+
+.tagLists li:first-child {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+    color: black;
+}
+
+.tagLists li {
+    display: flex;
+    cursor: pointer;
+    margin-top: 13px;
+    position: relative;
+}
+
+.menuUp, 
+.menuDown {
+    width: 13px;
+    place-self: center;
+    color: #1B1B1B;
+}
+
+.searchInput {
+    border: 1px solid color-mix(in srgb, #C6C6C6 80%, #000000 20%);
+    height: 36px;
+    width: 163px;
+    border-radius: 2px;
+    padding: 10px;
+    color: #7A7A7A;
+    outline: none;
+    padding-right: 30px;
+}
+
+.tagSearchBar {
+    position: absolute;
+}
+
+.tagSearchButton .fa-xmark {
+    height: 6px;
+    color: #7A7A7A;
+    padding-right: 10px;
+    position: absolute;
+    top: 31%;
+    right: 23px;
+}
+
+.tagSearchButton .fa-magnifying-glass {
+    width: 14px;
+    color: #7A7A7A;
+    position: absolute;
+    left: 85%;
+    bottom: 30%;  
+}
+
+.recipeCount {
+    display: flex;
+    flex-direction: row-reverse;
+    place-self: center;
+    font-size: 21px;
+
+}
+
+/*Recipe styles*/
 .recipe_section {
     padding: 55px 100px;
     row-gap: 66px;
     column-gap: 48px;
-
+    position: absolute;
+    z-index: -100;
 }
 
 .recipeCard{

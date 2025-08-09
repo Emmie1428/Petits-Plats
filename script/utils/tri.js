@@ -1,16 +1,18 @@
 
 export default function initTri() {
     document.addEventListener("DOMContentLoaded", () => {
-        const tagLists = document.querySelector(".tagLists");
+        const tagLists = document.querySelectorAll(".tagLists");
+
+        tagLists.forEach(tagLists => {
         const currentOption = tagLists.querySelector("li");
         const otherOptions = tagLists.querySelectorAll("li:not(:first-child)");
-        const menuDown = document.getElementById("menu-down");
-        const menuUp = document.getElementById("menu-up");
+        const menuDown = tagLists.querySelector(".menuDown");
+        const menuUp = tagLists.querySelector(".menuUp");
 
         //Cache les autres options et affiche le menuDown
         menuDown.classList.remove("hidden");
         menuUp.classList.add("hidden");
-        otherOptions.forEach(option => option.classList.add("hidden"));
+        otherOptions.forEach((option) => option.classList.add("hidden"));
 
         //Gère l'ouverture et la fermeture du menu déroulant
         function toggleMenu() {
@@ -38,15 +40,17 @@ export default function initTri() {
             }
         });
 
+        //Ferme le menu si perds le focus
         tagLists.addEventListener("focusout", () => {
             setTimeout(() => {
                 if (!tagLists.contains(document.activeElement)) {
-                    otherOptions.forEach(option => option.classList.add("hidden"));
+                    otherOptions.forEach((option) => option.classList.add("hidden"));
                     menuDown.classList.remove("hidden");
                     menuUp.classList.add("hidden");
                     currentOption.setAttribute("aria-expanded", "false");
                 }
             }, 0);
         });
+    });
     });
 }
