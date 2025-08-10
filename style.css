@@ -32,6 +32,7 @@ input[type="search"]::-webkit-search-cancel-button {
 body {
     max-width: 1440px;
     width: 100%;
+    background-color: #EDEDED;
 }
 
 section {
@@ -108,9 +109,16 @@ h1 {
 }
 
 /*Tags styles*/
+.ingredientsFilter,
+.appareilsFilter,   
+.utsensilsFilter {
+    position: relative;
+    padding-right: 16%;
+}
 
 .filters {
     width: 100%;
+    height: 75px;
     padding: 21px 100px 0;
     display: flex;
     column-gap: 66px;
@@ -121,6 +129,7 @@ h1 {
     padding: 16px;
     border-radius: 11px;
     font-size: 14px;
+    position: absolute;
 }
 
 .tagLists li:first-child {
@@ -176,6 +185,7 @@ h1 {
     position: absolute;
     left: 85%;
     bottom: 30%;  
+    cursor: pointer;
 }
 
 .recipeCount {
@@ -183,7 +193,6 @@ h1 {
     flex-direction: row-reverse;
     place-self: center;
     font-size: 21px;
-
 }
 
 /*Recipe styles*/
