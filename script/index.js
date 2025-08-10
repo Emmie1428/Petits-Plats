@@ -1,7 +1,13 @@
-import initTri from "./utils/tri.js";  
-import recipesTemplate from "/script/template/recipes.js";
+import {
+    initSearch,
+    mainSearchFilter,
+    recipeDisplay,
+    ingredientsDisplay,
+    initTri
+    } from "./utils/tri.js";
 
-initTri();
+let data = [];
+
 
 //Récupération des recettes
 async function getRecipe() {
@@ -15,22 +21,19 @@ async function getRecipe() {
     }
 }
 
-//Affichage des recettes
-async function displayRecipe(recipes) {
-    const recipeSection = document.querySelector(".recipe_section");
-    
-    recipes.forEach((recipe) => {
-       const recipeModel = recipesTemplate(recipe);
-       const recipeCardDOM = recipeModel.getRecipeCardDOM();    
-       recipeSection.appendChild(recipeCardDOM); 
-    });
-}
+
 
 async function init() {
     const {recipes} = await getRecipe();
-    displayRecipe(recipes);
+    recipeDisplay(recipes);
+
+    data = {recipes};
+
+    initSearch(".mainSearch", data.recipes, mainSearchFilter, recipeDisplay);
+    initSearch(".ingredientsFilter .searchInput", data.recipes, ingredientFilter, ingredientsDisplay);
+
+    initTri();
 }   
 
-init(); 
+init();
 
-export default displayRecipe

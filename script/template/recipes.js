@@ -25,14 +25,16 @@ function recipesTemplate (data) {
 
         // Affichage liste des ingrédients
         const ingredientsList = card.querySelector(".ingredientsList");
-        ingredients.forEach(ingredients => {
+        if (ingredientsList) {
+            ingredientsList.innerHTML = ""; // Vide la liste avant de la remplir
+            ingredients.forEach(ingredients => {
             const signleIngredient = document.createElement("li");
             signleIngredient.classList.add("singleIngredient");
 
             // Création span pour le nom de l'ingrédient  
             const ingredientName = document.createElement("span");
             ingredientName.classList.add("ingredientName");
-            ingredientName.textContent = ingredients.ingredient;
+            ingredientName.textContent = (typeof ing === "string") ? ing : (ing.ingredient || "");
 
             //Création du span pour la quantité et l'unité de l'ingrédient
             const quantityAndUnit = document.createElement("span");
@@ -48,14 +50,13 @@ function recipesTemplate (data) {
 
             signleIngredient.appendChild(ingredientName);
             signleIngredient.appendChild(quantityAndUnit);
-
             ingredientsList.appendChild(signleIngredient);
 
         });
 
         return card;
+        }
     }
-
     return { id, name, servings, ingredients, time, description, appliance, ustensils, getRecipeCardDOM };
 }
 
