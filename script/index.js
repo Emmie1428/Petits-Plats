@@ -1,36 +1,33 @@
 import {
     initSearch,
     mainSearchFilter,
+    ingredientFilter,
     recipeDisplay,
     ingredientsDisplay,
     initTri
     } from "./utils/tri.js";
-
-let data = [];
-
 
 //Récupération des recettes
 async function getRecipe() {
     try {
         const response = await fetch("/recipes.json");
         const data = await response.json();
-        return {recipes: data.recipes};
+        return data.recipes;
     } catch (error) {
         console.error("Erreur lors de la récupération des recettes:", error);
-        return {recipes: [] };
+        return [] ;
     }
 }
 
 
-
 async function init() {
-    const {recipes} = await getRecipe();
+    const recipes = await getRecipe();
     recipeDisplay(recipes);
 
-    data = {recipes};
+    const data = recipes;
 
-    initSearch(".mainSearch", data.recipes, mainSearchFilter, recipeDisplay);
-    initSearch(".ingredientsFilter .searchInput", data.recipes, ingredientFilter, ingredientsDisplay);
+    initSearch(".mainSearch", data, mainSearchFilter, recipeDisplay);
+    initSearch(".ingredientsFilter .searchInput", data, ingredientFilter, ingredientsDisplay);
 
     initTri();
 }   

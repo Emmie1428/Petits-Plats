@@ -26,7 +26,7 @@ function recipesTemplate (data) {
         // Affichage liste des ingrédients
         const ingredientsList = card.querySelector(".ingredientsList");
         if (ingredientsList) {
-            ingredientsList.innerHTML = ""; // Vide la liste avant de la remplir
+            ingredientsList.innerHTML = "";
             ingredients.forEach(ingredients => {
             const signleIngredient = document.createElement("li");
             signleIngredient.classList.add("singleIngredient");
@@ -34,7 +34,7 @@ function recipesTemplate (data) {
             // Création span pour le nom de l'ingrédient  
             const ingredientName = document.createElement("span");
             ingredientName.classList.add("ingredientName");
-            ingredientName.textContent = (typeof ing === "string") ? ing : (ing.ingredient || "");
+            ingredientName.textContent = (typeof ingredients === "string") ? ingredients : (ingredients.ingredient || "");
 
             //Création du span pour la quantité et l'unité de l'ingrédient
             const quantityAndUnit = document.createElement("span");

@@ -23,47 +23,50 @@ export function initSearch(inputSelector, data, filterLogic, searchDisplay) {
     });
 } 
 
+//Normalisation
+function normalize(str) {
+    return str
+        ? str.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "")
+        : "";
+}
 
 //Recherche principale
 export function mainSearchFilter(item, searchValue) {
+    const search = normalize(searchValue);
+
     const ingredientsMatch = item.ingredients && item.ingredients.some(ingredient =>
-         ingredientName(ingredient).includes(searchValue)
+         normalize(ingredient.ingredient).includes(search)
         );
 
-        const ustensilsMatch = item.ustensils && item.ustensils.some(ustensil =>
-            (typeof ustensil === "string" ? ustensil : String(ustensil)).toLowerCase().includes(searchValue)
-        );
-
-        const applianceMatch = item.appliance && (typeof item.appliance === "string" ? item.appliance : String(item.appliance)).toLowerCase().includes(searchValue);
-
-        return item.name,toLowerCase().includes(searchValue) ||
-        (item.description && item.description.toLowerCase().includes(searchValue)) ||
-        ingredientsMatch || 
-        ustensilsMatch ||
-        applianceMatch;
-    }
+        return normalize(item.name).includes(search) ||
+               normalize(item.description).includes(search) ||
+                ingredientsMatch;
+            
+}
 
 //Recherche par ingrédient
 export function ingredientFilter(item, searchValue) {
-   return item.ingredients && item.ingredients.some(ingredient =>
-        ingredientName(ingredient).toLowerCase().includes(searchValue)
-        );
+    const search = normalize(searchValue);
+    return item.ingredients && item.ingredients.some(ingredient =>
+        normalize(ingredientName(ingredient)).includes(search))
 }
 
 
 //Affichage des recettes
 export function recipeDisplay(recipes) {
-    const recipeSection = document.querySelector(".recipe_section");
-    
+    const recipeContainer = document.querySelector(".recipe-container");
+    if (!recipeContainer) return;
+    recipeContainer.innerHTML = "";
+
     if (!recipes || recipes.length === 0) {
-        recipeSection.innerHTML = "<p>Aucune recette trouvée</p>";
+        recipeContainer.innerHTML = "<p>Aucune recette trouvée</p>";
         return;
     }
 
     recipes.forEach((recipe) => {
        const recipeModel = recipesTemplate(recipe);
        const recipeCardDOM = recipeModel.getRecipeCardDOM();    
-       recipeSection.appendChild(recipeCardDOM); 
+       recipeContainer.appendChild(recipeCardDOM); 
     });
 }
 
