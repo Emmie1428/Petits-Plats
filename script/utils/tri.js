@@ -21,8 +21,10 @@ export function search(recipes, searchInput) {
         const name = normalize(recipe.name);
         const description = normalize(recipe.description);  
         const ingredients = recipe.ingredients.map(ingredient => ingredientName(ingredient)).join(" ");
- 
-        return name.includes(searchValue) || description.includes(searchValue) || ingredients.includes(searchValue);
+        const appliance = normalize(recipe.appliance);
+        const ustensils = recipe.ustensils.map(ustensil => normalize(ustensil)).join(" ");
+
+        return name.includes(searchValue) || description.includes(searchValue) || ingredients.includes(searchValue) || appliance.includes(searchValue) || ustensils.includes(searchValue);
     });
 }
 
@@ -59,12 +61,14 @@ export function recipeDisplay(recipes) {
 
 
 //Affichage des ingrédients
-export function tagsDisplay(recipes) {
+export function tagsDisplay(recipes, ingredientSearch = "") {
     const ul = document.querySelector(".ingredientsTags");
     ul.innerHTML = "";
-    const ingredients = [...new Set(recipes.flatMap(recipe => 
+    let ingredients = [...new Set(recipes.flatMap(recipe => 
         recipe.ingredients.map(ingredient => ingredientName(ingredient))
     ))];
+
+    if (ingredientSearch && ingredientSearch.length >= 3) {
     ingredients.forEach(ingredient => {
         const li = document.createElement("li");
         li.textContent = ingredient;

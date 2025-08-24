@@ -148,8 +148,8 @@ h1 {
     position: relative;
 }
 
-.ingredientsTags li {
-    flex-direction: column!important;
+.ingredientsTags{
+    flex-direction: column;
 }
 
 .menuUp, 
