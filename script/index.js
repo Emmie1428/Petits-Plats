@@ -1,7 +1,8 @@
 import {
     search,
     recipeDisplay,
-    initTri
+    initTri,
+    tagsDisplay,
     } from "./utils/tri.js";
 
     let recipes = [];
@@ -24,12 +25,14 @@ async function init() {
     recipes = await getRecipe();
     filteredRecipes = recipes;
     recipeDisplay(filteredRecipes);
+    tagsDisplay(filteredRecipes);
 
    const searchInput = document.querySelector(".mainSearch");
    searchInput.addEventListener("input", (e) => {
        const searchValue = e.target.value.trim();
         filteredRecipes = search(recipes, searchValue);
         recipeDisplay(filteredRecipes);
+        tagsDisplay(filteredRecipes);
    });
 
     initTri();

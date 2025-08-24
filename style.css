@@ -148,6 +148,10 @@ h1 {
     position: relative;
 }
 
+.ingredientsTags li {
+    flex-direction: column!important;
+}
+
 .menuUp, 
 .menuDown {
     width: 13px;

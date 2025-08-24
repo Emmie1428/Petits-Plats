@@ -59,8 +59,8 @@ export function recipeDisplay(recipes) {
 
 
 //Affichage des ingrédients
-function tagsDisplay(recipes) {
-    const ul = document.querySelector(".tagsList");
+export function tagsDisplay(recipes) {
+    const ul = document.querySelector(".ingredientsTags");
     ul.innerHTML = "";
     const ingredients = [...new Set(recipes.flatMap(recipe => 
         recipe.ingredients.map(ingredient => ingredientName(ingredient))
@@ -68,25 +68,12 @@ function tagsDisplay(recipes) {
     ingredients.forEach(ingredient => {
         const li = document.createElement("li");
         li.textContent = ingredient;
-        
+        li.addEventListener("click", () => {
+            filteredRecipes = search(recipes, ingredient);
+            recipeDisplay(filteredRecipes);
+            tagsDisplay(filteredRecipes);
+        });
         ul.appendChild(li);
-    }
-
-export function ingredientsDisplay(ingredients) {
-    const ingredientList = document.querySelector(".ingredientsTags")
-    if (!ingredientList) return;
-
-    ingredientList.innerHTML = "";
-
-    if (ingredients.length === 0) {
-        ingredientList.innerHTML = "<p>Aucun résultat</p>";
-        return;
-    }
-
-    ingredients.forEach((ingredient) => {
-       const li = document.createElement("li");
-       li.textContent = ingredient;
-       ingredientList.appendChild(li); 
     });
 }
 
