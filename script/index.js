@@ -1,11 +1,11 @@
 import {
-    initSearch,
-    mainSearchFilter,
-    ingredientFilter,
+    search,
     recipeDisplay,
-    ingredientsDisplay,
     initTri
     } from "./utils/tri.js";
+
+    let recipes = [];
+    let filteredRecipes = [];
 
 //Récupération des recettes
 async function getRecipe() {
@@ -21,13 +21,16 @@ async function getRecipe() {
 
 
 async function init() {
-    const recipes = await getRecipe();
-    recipeDisplay(recipes);
+    recipes = await getRecipe();
+    filteredRecipes = recipes;
+    recipeDisplay(filteredRecipes);
 
-    const data = recipes;
-
-    initSearch(".mainSearch", data, mainSearchFilter, recipeDisplay);
-    initSearch(".ingredientsFilter .searchInput", data, ingredientFilter, ingredientsDisplay);
+   const searchInput = document.querySelector(".mainSearch");
+   searchInput.addEventListener("input", (e) => {
+       const searchValue = e.target.value.trim();
+        filteredRecipes = search(recipes, searchValue);
+        recipeDisplay(filteredRecipes);
+   });
 
     initTri();
 }   
