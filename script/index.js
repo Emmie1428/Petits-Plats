@@ -2,12 +2,13 @@ import {
     search,
     recipeDisplay,
     initTri,
-    tagsDisplay
+    tagsDisplay,
+    normalize
     } from "./utils/tri.js";
 
     let recipes = [];
     let filteredRecipes = [];
-    let searchValue = "";
+    let searchInput = [];   
 
 //Récupération des recettes
 async function getRecipe() {
@@ -29,19 +30,25 @@ async function init() {
     tagsDisplay(filteredRecipes);
     
     document.querySelector(".mainSearch").addEventListener("input", (e) => {
-       searchValue = e.target.value.trim();
-        filteredRecipes = search(recipes, searchValue);
+        const mainValue = e.target.value.trim();
+        const currentTags = searchInput.filter(tag => normalize(tag) !== normalize(searchInput[0]));
+        searchInput.length = 0;
+        if (mainValue) searchInput.push(mainValue);
+        searchInput.push(...currentTags);
+
+        filteredRecipes = search(recipes, searchInput);
         recipeDisplay(filteredRecipes);
         tagsDisplay(filteredRecipes);
-   });
-
-   document.querySelector(".searchInput").addEventListener("input", (e) => {
-    const ingredientSearch = e.target.value.trim();
-    filteredRecipes = search(recipes, searchValue);
-    tagsDisplay(filteredRecipes, ingredientSearch);
     });
 
-     initTri();
+   const ingredientSearchInput = document.querySelector(".searchInput");
+    ingredientSearchInput.addEventListener("input", (e) => {
+        const ingredientSearch = e.target.value.trim();
+        filteredRecipes = search(recipes, searchInput);
+        tagsDisplay(filteredRecipes, ingredientSearch);
+    });
+
+    initTri();
 }
 
 init();
