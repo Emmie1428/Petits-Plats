@@ -192,6 +192,24 @@ h1 {
     cursor: pointer;
 }
 
+.tagContainer {
+    display: flex;
+    padding: 20px 100px 0;
+    gap: 66px;
+}
+
+.tag {
+    height: 53px;
+    width: 195px;
+    border-radius: 10px;
+    background-color: #FFD15B;
+    padding: 17px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
 .recipeCount {
     display: flex;
     flex-direction: row-reverse;
@@ -202,7 +220,7 @@ h1 {
 /*Recipe styles*/
 .recipe_section,
 .recipe-container {
-    padding: 55px 100px;
+    padding: 35px 100px;
     row-gap: 66px;
     column-gap: 48px;
     position: absolute;

@@ -1,9 +1,7 @@
 import recipesTemplate from "/script/template/recipes.js";
 
 let recipes = [];
-let filteredRecipes = [];
 export let searchInput = [];
-
 
 //Récupération du nom d'un ingrédient
 function ingredientName(ingredient) {
@@ -13,14 +11,10 @@ function ingredientName(ingredient) {
 
 //Fonction de recherche
 export function search(recipes, searchInput) {
-    if (!Array.isArray(searchInput)) {
-        searchInput = [searchInput];
-    }
+    if (!Array.isArray(searchInput)) searchInput = [searchInput];
     
-    const searchValue = searchInput
-        .map(input => normalize(input))
-        .filter(input => input.length >= 3);
-
+    
+    const searchValue = searchInput.map(input => normalize(input))
     if (searchValue.length === 0) return recipes;
 
     return recipes.filter(recipe => {
@@ -40,8 +34,6 @@ export function search(recipes, searchInput) {
     });
 }
 
-    filteredRecipes = search(recipes, searchInput);
-    recipeDisplay(filteredRecipes);
 
 //Normalisation
 export function normalize(str) {
@@ -73,7 +65,7 @@ export function recipeDisplay(recipes) {
 
 
 //Affichage des ingrédients
-export function tagsDisplay(recipes, ingredientSearch = "") {
+export function tagsDisplay(recipes, ingredientSearch = "", updatedSearch) {
     const ul = document.querySelector(".ingredientsTags");
     ul.innerHTML = "";
 
@@ -83,39 +75,31 @@ export function tagsDisplay(recipes, ingredientSearch = "") {
         )
     )];
 
-    if (ingredientSearch.length >= 3) {
-        ingredients = ingredients.filter(ingredient => 
-            normalize(ingredient).includes(normalize(ingredientSearch))
-        );
-    }
-
-    const activeFilters = new Set(searchInput.map(tag => normalize(tag)));
-
-    ingredients = ingredients.filter(ingredient =>
-        !activeFilters.has(normalize(ingredient))
+    ingredients = ingredients.filter(ingredient => 
+        normalize(ingredient).includes(normalize(ingredientSearch))
     );
 
+    //Ordre alphabétque
     ingredients.sort((a, b) => a.localeCompare(b));
 
     ingredients.forEach(ingredient => {
-            const li = document.createElement("li");
-            li.textContent = ingredient.charAt(0).toUpperCase() + ingredient.slice(1);
+        const li = document.createElement("li"); 
+        li.textContent = ingredient;
             
-            li.addEventListener("click", () => {
-            const norm = normalize(ingredient);
-            if (!activeFilters.has(norm)) {
+        li.addEventListener("click", () => { 
+            if (!searchInput.includes(ingredient)) {
+                createTag(ingredient, updatedSearch);
                 searchInput.push(ingredient);
-                filteredRecipes = search(recipes, searchInput);
-                recipeDisplay(filteredRecipes);
-                tagsDisplay(filteredRecipes);
+                
+                if (updatedSearch) updatedSearch();
             }
-        });
-
-            ul.appendChild(li);
+        })
+        ul.appendChild(li);
     });
-}
+};
 
 
+//Initialisation liste déroulante
 export function initTri() {
     const tagLists = document.querySelectorAll(".tagLists");
 
@@ -166,3 +150,46 @@ export function initTri() {
     });
 };
 
+//Création du tag
+export function createTag(value, updatedSearch) {
+    const tagContainer = document.querySelector(".tagContainer");
+
+    //Empêche doublons
+    if (searchInput.includes(value)) return; 
+
+    //Création tag
+    const tag = document.createElement("div");
+    tag.textContent = value;
+    tag.classList.add("tag");
+
+    //Ajout icone fermeture
+    const closeIcon = document.createElement("span");
+    closeIcon.innerHTML = "X";
+    closeIcon.classList.add("closeIcon");
+    closeIcon.setAttribute("role", "button");
+    closeIcon.setAttribute("tabindex", "0");
+    closeIcon.setAttribute("aria-label", "Supprimer le filtre");
+
+    //Fonction pour supprimer le tag
+    function removeTag() {
+        const index = searchInput.indexOf(value);
+        if (index > -1) searchInput.splice(index, 1);
+
+        if (updatedSearch) updatedSearch();
+        tag.remove();
+        }
+
+    //Gestion fermeture tag clic et clavier
+    closeIcon.addEventListener("click", removeTag);
+    closeIcon.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            removeTag();
+        }
+    });
+    
+    tag.appendChild(closeIcon);
+    tagContainer.appendChild(tag);
+
+    console.log("Tag ajouté :", tagContainer.innerHTML);
+}

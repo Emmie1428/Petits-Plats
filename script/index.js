@@ -3,12 +3,13 @@ import {
     recipeDisplay,
     initTri,
     tagsDisplay,
-    normalize
+    normalize,
+    searchInput
     } from "./utils/tri.js";
 
     let recipes = [];
     let filteredRecipes = [];
-    let searchInput = [];   
+  
 
 //Récupération des recettes
 async function getRecipe() {
@@ -27,28 +28,37 @@ async function init() {
     recipes = await getRecipe();
     filteredRecipes = recipes;
     recipeDisplay(filteredRecipes);
-    tagsDisplay(filteredRecipes);
+    tagsDisplay(filteredRecipes, "", updatedRecipes);
     
     document.querySelector(".mainSearch").addEventListener("input", (e) => {
         const mainValue = e.target.value.trim();
         const currentTags = searchInput.filter(tag => normalize(tag) !== normalize(searchInput[0]));
         searchInput.length = 0;
-        if (mainValue) searchInput.push(mainValue);
+
+        if (mainValue.length >=3) searchInput.push(mainValue);
         searchInput.push(...currentTags);
 
-        filteredRecipes = search(recipes, searchInput);
-        recipeDisplay(filteredRecipes);
-        tagsDisplay(filteredRecipes);
+        updatedRecipes();
     });
-
+    
+    //Recherche ingrédients
    const ingredientSearchInput = document.querySelector(".searchInput");
     ingredientSearchInput.addEventListener("input", (e) => {
         const ingredientSearch = e.target.value.trim();
-        filteredRecipes = search(recipes, searchInput);
-        tagsDisplay(filteredRecipes, ingredientSearch);
+        tagsDisplay(filteredRecipes, ingredientSearch, updatedRecipes);
     });
 
     initTri();
+}
+
+function updatedRecipes() {
+    if (searchInput.length > 0) {
+        filteredRecipes = search(recipes, searchInput); 
+    } else {
+        filteredRecipes = recipes;
+    }
+    recipeDisplay(filteredRecipes);
+    tagsDisplay(filteredRecipes, "", updatedRecipes);
 }
 
 init();
