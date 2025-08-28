@@ -8,6 +8,15 @@ function ingredientName(ingredient) {
     return(typeof ingredient === "string" ? ingredient.toLowerCase() : ingredient.ingredient.toLowerCase());
 }
 
+//Normalisation majuscule, accent, espace
+export function normalize(str) {
+    if (!str) return "";
+    return String(str)
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .replace(/\s+/g, ' ').trim()
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Fonction de recherche
@@ -60,14 +69,13 @@ export function recipeDisplay(recipes) {
 //Affichage des ingrédients, appareils et ustensiles
 export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "ingredient", searchInput) {
     let listType;
-    let rawValue = [];
+    let tagValue = [];
 
     switch (type) {
         case "ingredient": 
             listType = ".ingredientsTags";
             tagValue = recipes.flatMap(recipe =>
                 recipe.ingredients.map(ingredient =>
-                    typeof ingredient === "string" ? ingredient : ingredient.ingredient));
                     typeof ingredient === "string" ? ingredient : ingredient.ingredient));
             break;
         case "appareil":
@@ -90,12 +98,12 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
         .filter(tag => normalize(tag).includes(normalize(searchValue)));
 
     //Ordre alphabétque
-    tagsValues.sort((a, b) => a.localeCompare(b));
+    tagValue.sort((a, b) => a.localeCompare(b));
 
     const ul = document.querySelector(listType);
     ul.innerHTML = "";
 
-    tagsValues.forEach(tag => {
+    tagValue.forEach(tag => {
         if (!tag) return;
         const li = document.createElement("li");
         li.textContent = tag;
