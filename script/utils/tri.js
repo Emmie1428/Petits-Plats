@@ -1,7 +1,6 @@
 import recipesTemplate from "/script/template/recipes.js";
 
 let recipes = [];
-export let searchInput = [];
 
 //Récupération du nom d'un ingrédient car dans tableau
 function ingredientName(ingredient) {
@@ -10,53 +9,40 @@ function ingredientName(ingredient) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-//Normalisation majuscule, accent, espace
-export function normalize(str) {
-    if (!str) return "";
-    return String(str)
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/\p{Diacritic}/gu, "")
-        .replace(/\s+/g, ' ').trim()
-}
-
-//Canonicalisation gestion pluriel et doublons
-export function canonicalize(str) {
-    if (!str) return "";
-    let word = normalize(str);
-
-    if (word.endsWith("eaux")) word = word.slice(0, -1);
-    else if (word.endsWith("aux")) word = word.slice(0, -3) + "al";
-    else if (word.endsWith("s") && !word.endsWith("ss")) word = word.slice(0, -1);
-    else if (word.endsWith("x")) word = word.slice(0, -1);
-
-    return word;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
 //Fonction de recherche
 export function search(recipes, searchInput) {
     if (!Array.isArray(searchInput)) searchInput = [searchInput];
     
     
-    const searchValue = searchInput.map(input => canonicalize(input))
+    const searchValue = searchInput.map((input) => normalize(input.value));
     if (searchValue.length === 0) return recipes;
 
-    return recipes.filter(recipe => {
-        const name = canonicalize(recipe.name);
-        const description = canonicalize(recipe.description);  
-        const ingredients = recipe.ingredients.map(ingredient => canonicalize(ingredientName(ingredient))).join(" ");
-        const appliance = canonicalize(recipe.appliance);
-        const ustensils = recipe.ustensils.map(ustensil => canonicalize(ustensil)).join(" ");
+    return recipes.filter((recipe) => {
+        const name = normalize(recipe.name);
+        const description = normalize(recipe.description);  
+        const ingredients = recipe.ingredients.map(ingredient => ingredientName(ingredient)).join(" ");
+        const appliance = normalize(recipe.appliance);
+        const ustensils = recipe.ustensils.map(ustensil => normalize(ustensil)).join(" ");
 
-        return searchValue.every(searchInput => 
-            name.includes(searchInput) ||
-            description.includes(searchInput) ||    
-            ingredients.includes(searchInput) ||
-            appliance.includes(searchInput) ||
-            ustensils.includes(searchInput)
+        return searchValue.every(inputValue => 
+            name.includes(inputValue) ||
+            description.includes(inputValue) ||    
+            ingredients.includes(inputValue) ||
+            appliance.includes(inputValue) ||
+            ustensils.includes(inputValue)
             );
     });
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//Normalisation
+export function normalize(str) {
+    if (!str) return "";
+    return String(str)
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "");
 }
 
 
@@ -82,58 +68,56 @@ export function recipeDisplay(recipes) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Affichage des ingrédients, appareils et ustensiles
-export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "ingredient") {
+export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "ingredient", searchInput) {
     let listType;
-    let rawValue = [];
+    let tagValue = [];
 
     switch (type) {
         case "ingredient": 
             listType = ".ingredientsTags";
-            rawValue = recipes.flatMap(recipe =>
+            tagValue = recipes.flatMap(recipe =>
                 recipe.ingredients.map(ingredient =>
                     typeof ingredient === "string" ? ingredient : ingredient.ingredient));
             break;
         case "appareil":
             listType = ".appareilsTags";
-            rawValue = recipes.map(recipe =>
+            tagValue = recipes.map(recipe =>
                  recipe.appliance);
             break;
         case "ustensil":    
             listType = ".ustensilsTags";
-            rawValue = recipes.flatMap(recipe =>
+            tagValue = recipes.flatMap(recipe =>
                  recipe.ustensils);
             break;
     }
-    
-    //Supprime les doublons
-    const originalTag = new Map();
-    rawValue.forEach (value => {
-        const tag = canonicalize(value);
-        if (!originalTag.has(tag)) originalTag.set(tag,value);
-    });
 
-    let tagsValues = Array.from(originalTag.values()).filter(tag =>
-        canonicalize(tag).includes(canonicalize(searchValue))
-    );
+    tagValue = tagValue
+        .filter(tag => tag)
+        .filter((tag, index, array) => {
+            return array.findIndex(tagValue => normalize(tagValue) === normalize(tag)) === index;
+        })
+        .filter(tag => normalize(tag).includes(normalize(searchValue)));
 
     //Ordre alphabétque
-    tagsValues.sort((a, b) => a.localeCompare(b));
+    tagValue.sort((a, b) => a.localeCompare(b));
 
     const ul = document.querySelector(listType);
     ul.innerHTML = "";
 
-    tagsValues.forEach(tag => {
+    tagValue.forEach(tag => {
         if (!tag) return;
         const li = document.createElement("li");
         li.textContent = tag;
 
         li.addEventListener("click", () => {
-            if (!searchInput.some(tag => canonicalize(tag) === canonicalize(tag))) {
-                createTag(tag, updatedSearch);
-                searchInput.push(tag);
+            if (!searchInput.some((item) => normalize(item.value) === normalize(tag) && item.tag === true)) {
+                createTag(tag, updatedSearch, searchInput);
+                searchInput.push({value: tag, tag: true});
+                
                 if (updatedSearch) updatedSearch();
-            }   
+            }
         });
+
         ul.appendChild(li);
     });
 }
@@ -193,13 +177,14 @@ export function initTri() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Création du tag
-export function createTag(value, updatedSearch) {
+export function createTag(value, updatedSearch, searchInput) {
     const tagContainer = document.querySelector(".tagContainer");
+    if (!tagContainer) return;
 
     //Empêche doublons
-    if (searchInput.some(tag =>
-        canonicalize(tag) === canonicalize(value))
-    ) return; 
+    if (searchInput.some((item) => normalize(item.value) === normalize(value) && item.tag === true)) {
+       return; 
+    }
 
     //Création tag
     const tag = document.createElement("div");
@@ -216,12 +201,12 @@ export function createTag(value, updatedSearch) {
 
     //Fonction pour supprimer le tag
     function removeTag() {
-        const index = searchInput.findIndex(tag => canonicalize(tag) === canonicalize(value));
-        if (index > -1) searchInput.splice(index, 1);
-
-        if (updatedSearch) updatedSearch();
         tag.remove();
-    }
+
+        if (updatedSearch) {
+            updatedSearch();
+        }
+}
 
     //Gestion fermeture tag clic et clavier
     closeIcon.addEventListener("click", removeTag);
@@ -234,6 +219,4 @@ export function createTag(value, updatedSearch) {
     
     tag.appendChild(closeIcon);
     tagContainer.appendChild(tag);
-
-    console.log("Tag ajouté :", tagContainer.innerHTML);
 }
