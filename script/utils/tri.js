@@ -9,6 +9,29 @@ function ingredientName(ingredient) {
     return(typeof ingredient === "string" ? ingredient.toLowerCase() : ingredient.ingredient.toLowerCase());
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//Normalisation majuscule, accent, espace
+export function normalize(str) {
+    if (!str) return "";
+    return String(str)
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .replace(/\s+/g, ' ').trim()
+}
+
+//Canonicalisation gestion pluriel et doublons
+export function canonicalize(str) {
+    if (!str) return "";
+    let word = normalize(str);
+
+    if (word.endsWith("eaux")) word = word.slice(0, -1);
+    else if (word.endsWith("aux")) word = word.slice(0, -3) + "al";
+    else if (word.endsWith("s") && !word.endsWith("ss")) word = word.slice(0, -1);
+    else if (word.endsWith("x")) word = word.slice(0, -1);
+
+    return word;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Fonction de recherche
@@ -16,15 +39,15 @@ export function search(recipes, searchInput) {
     if (!Array.isArray(searchInput)) searchInput = [searchInput];
     
     
-    const searchValue = searchInput.map(input => normalize(input))
+    const searchValue = searchInput.map(input => canonicalize(input))
     if (searchValue.length === 0) return recipes;
 
     return recipes.filter(recipe => {
-        const name = normalize(recipe.name);
-        const description = normalize(recipe.description);  
-        const ingredients = recipe.ingredients.map(ingredient => ingredientName(ingredient)).join(" ");
-        const appliance = normalize(recipe.appliance);
-        const ustensils = recipe.ustensils.map(ustensil => normalize(ustensil)).join(" ");
+        const name = canonicalize(recipe.name);
+        const description = canonicalize(recipe.description);  
+        const ingredients = recipe.ingredients.map(ingredient => canonicalize(ingredientName(ingredient))).join(" ");
+        const appliance = canonicalize(recipe.appliance);
+        const ustensils = recipe.ustensils.map(ustensil => canonicalize(ustensil)).join(" ");
 
         return searchValue.every(searchInput => 
             name.includes(searchInput) ||
@@ -34,17 +57,6 @@ export function search(recipes, searchInput) {
             ustensils.includes(searchInput)
             );
     });
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//Normalisation
-export function normalize(str) {
-    if (!str) return "";
-    return String(str)
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/\p{Diacritic}/gu, "");
 }
 
 
@@ -72,56 +84,56 @@ export function recipeDisplay(recipes) {
 //Affichage des ingrédients, appareils et ustensiles
 export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "ingredient") {
     let listType;
-    let tagValue = [];
+    let rawValue = [];
 
     switch (type) {
         case "ingredient": 
             listType = ".ingredientsTags";
-            tagValue = [...new Set(recipes.flatMap(recipe =>
+            rawValue = recipes.flatMap(recipe =>
                 recipe.ingredients.map(ingredient =>
-                    typeof ingredient === "string" ? ingredient : ingredient.ingredient)))];
+                    typeof ingredient === "string" ? ingredient : ingredient.ingredient));
             break;
         case "appareil":
             listType = ".appareilsTags";
-            tagValue = [...new Set(recipes.map(recipe =>
-                 recipe.appliance))];
+            rawValue = recipes.map(recipe =>
+                 recipe.appliance);
             break;
         case "ustensil":    
             listType = ".ustensilsTags";
-            tagValue = [...new Set(recipes.flatMap(recipe =>
-                 recipe.ustensils))];
+            rawValue = recipes.flatMap(recipe =>
+                 recipe.ustensils);
             break;
-
-        default:
-            tagValue.innerHTML = "<p>Recherche incompatible</p>";
-            return;
     }
-
     
+    //Supprime les doublons
+    const originalTag = new Map();
+    rawValue.forEach (value => {
+        const tag = canonicalize(value);
+        if (!originalTag.has(tag)) originalTag.set(tag,value);
+    });
 
-    tagValue = tagValue.filter(tag => 
-        normalize(tag).includes(normalize(searchValue)));
+    let tagsValues = Array.from(originalTag.values()).filter(tag =>
+        canonicalize(tag).includes(canonicalize(searchValue))
+    );
 
     //Ordre alphabétque
-    tagValue.sort((a, b) => a.localeCompare(b));
+    tagsValues.sort((a, b) => a.localeCompare(b));
 
     const ul = document.querySelector(listType);
     ul.innerHTML = "";
 
-    tagValue.forEach(tag => {
+    tagsValues.forEach(tag => {
         if (!tag) return;
         const li = document.createElement("li");
         li.textContent = tag;
 
         li.addEventListener("click", () => {
-            if (!searchInput.includes(tag)) {
+            if (!searchInput.some(tag => canonicalize(tag) === canonicalize(tag))) {
                 createTag(tag, updatedSearch);
                 searchInput.push(tag);
-                
                 if (updatedSearch) updatedSearch();
-            }
+            }   
         });
-
         ul.appendChild(li);
     });
 }
@@ -185,7 +197,9 @@ export function createTag(value, updatedSearch) {
     const tagContainer = document.querySelector(".tagContainer");
 
     //Empêche doublons
-    if (searchInput.includes(value)) return; 
+    if (searchInput.some(tag =>
+        canonicalize(tag) === canonicalize(value))
+    ) return; 
 
     //Création tag
     const tag = document.createElement("div");
@@ -202,12 +216,12 @@ export function createTag(value, updatedSearch) {
 
     //Fonction pour supprimer le tag
     function removeTag() {
-        const index = searchInput.indexOf(value);
+        const index = searchInput.findIndex(tag => canonicalize(tag) === canonicalize(value));
         if (index > -1) searchInput.splice(index, 1);
 
         if (updatedSearch) updatedSearch();
         tag.remove();
-        }
+    }
 
     //Gestion fermeture tag clic et clavier
     closeIcon.addEventListener("click", removeTag);

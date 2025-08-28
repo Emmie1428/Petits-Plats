@@ -28,7 +28,9 @@ async function init() {
     recipes = await getRecipe();
     filteredRecipes = recipes;
     recipeDisplay(filteredRecipes);
-    tagsDisplay(filteredRecipes, "", updatedRecipes);
+    tagsDisplay(filteredRecipes, "", updatedRecipes, "ingredient");
+    tagsDisplay(filteredRecipes, "", updatedRecipes, "appareil");
+    tagsDisplay(filteredRecipes, "", updatedRecipes, "ustensil");
     
     document.querySelector(".mainSearch").addEventListener("input", (e) => {
         const mainValue = e.target.value.trim();
