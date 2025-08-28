@@ -70,7 +70,7 @@ export function recipeDisplay(recipes) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Affichage des ingrédients, appareils et ustensiles
-export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "ingredient, appareil, ustensil") {
+export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "ingredient") {
     let listType;
     let tagValue = [];
 
