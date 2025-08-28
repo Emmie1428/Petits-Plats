@@ -3,12 +3,14 @@ import recipesTemplate from "/script/template/recipes.js";
 let recipes = [];
 export let searchInput = [];
 
-//Récupération du nom d'un ingrédient
+//Récupération du nom d'un ingrédient car dans tableau
 function ingredientName(ingredient) {
     if(!ingredient) return "";
     return(typeof ingredient === "string" ? ingredient.toLowerCase() : ingredient.ingredient.toLowerCase());
 }
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 //Fonction de recherche
 export function search(recipes, searchInput) {
     if (!Array.isArray(searchInput)) searchInput = [searchInput];
@@ -35,6 +37,7 @@ export function search(recipes, searchInput) {
 }
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 //Normalisation
 export function normalize(str) {
     if (!str) return "";
@@ -45,6 +48,7 @@ export function normalize(str) {
 }
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 //Affichage des recettes
 export function recipeDisplay(recipes) {
     const recipeContainer = document.querySelector(".recipe-container");
@@ -64,41 +68,65 @@ export function recipeDisplay(recipes) {
 }
 
 
-//Affichage des ingrédients
-export function tagsDisplay(recipes, ingredientSearch = "", updatedSearch) {
-    const ul = document.querySelector(".ingredientsTags");
-    ul.innerHTML = "";
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//Affichage des ingrédients, appareils et ustensiles
+export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "ingredient, appareil, ustensil") {
+    let listType;
+    let tagValue = [];
 
-    let ingredients = [...new Set(recipes.flatMap(recipe =>
-            recipe.ingredients).map(ingredient =>
-            typeof ingredient === "string" ? ingredient : ingredient.ingredient
-        )
-    )];
+    switch (type) {
+        case "ingredient": 
+            listType = ".ingredientsTags";
+            tagValue = [...new Set(recipes.flatMap(recipe =>
+                recipe.ingredients.map(ingredient =>
+                    typeof ingredient === "string" ? ingredient : ingredient.ingredient)))];
+            break;
+        case "appareil":
+            listType = ".appareilsTags";
+            tagValue = [...new Set(recipes.map(recipe =>
+                 recipe.appliance))];
+            break;
+        case "ustensil":    
+            listType = ".ustensilsTags";
+            tagValue = [...new Set(recipes.flatMap(recipe =>
+                 recipe.ustensils))];
+            break;
 
-    ingredients = ingredients.filter(ingredient => 
-        normalize(ingredient).includes(normalize(ingredientSearch))
-    );
+        default:
+            tagValue.innerHTML = "<p>Recherche incompatible</p>";
+            return;
+    }
+
+    
+
+    tagValue = tagValue.filter(tag => 
+        normalize(tag).includes(normalize(searchValue)));
 
     //Ordre alphabétque
-    ingredients.sort((a, b) => a.localeCompare(b));
+    tagValue.sort((a, b) => a.localeCompare(b));
 
-    ingredients.forEach(ingredient => {
-        const li = document.createElement("li"); 
-        li.textContent = ingredient;
-            
-        li.addEventListener("click", () => { 
-            if (!searchInput.includes(ingredient)) {
-                createTag(ingredient, updatedSearch);
-                searchInput.push(ingredient);
+    const ul = document.querySelector(listType);
+    ul.innerHTML = "";
+
+    tagValue.forEach(tag => {
+        if (!tag) return;
+        const li = document.createElement("li");
+        li.textContent = tag;
+
+        li.addEventListener("click", () => {
+            if (!searchInput.includes(tag)) {
+                createTag(tag, updatedSearch);
+                searchInput.push(tag);
                 
                 if (updatedSearch) updatedSearch();
             }
-        })
+        });
+
         ul.appendChild(li);
     });
-};
+}
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 //Initialisation liste déroulante
 export function initTri() {
     const tagLists = document.querySelectorAll(".tagLists");
@@ -150,6 +178,8 @@ export function initTri() {
     });
 };
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 //Création du tag
 export function createTag(value, updatedSearch) {
     const tagContainer = document.querySelector(".tagContainer");

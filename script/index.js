@@ -42,15 +42,25 @@ async function init() {
     });
     
     //Recherche ingrédients
-   const ingredientSearchInput = document.querySelector(".searchInput");
-    ingredientSearchInput.addEventListener("input", (e) => {
-        const ingredientSearch = e.target.value.trim();
-        tagsDisplay(filteredRecipes, ingredientSearch, updatedRecipes);
+    document.querySelector(".searchInputIngredient").addEventListener("input", (e) => {
+        tagsDisplay(filteredRecipes, e.target.value.trim(), updatedRecipes, "ingredient");
+    });
+  
+    //Recherche appareils
+    document.querySelector(".searchInputAppareil").addEventListener("input", (e) => {
+        tagsDisplay(filteredRecipes, e.target.value.trim(), updatedRecipes, "appareil");
+    });
+
+    //Recherche ustensils
+    document.querySelector(".searchInputUstensil").addEventListener("input", (e) => {
+        tagsDisplay(filteredRecipes, e.target.value.trim(), updatedRecipes, "ustensil");
     });
 
     initTri();
 }
 
+
+//Rafraichis les recettes selon les tags
 function updatedRecipes() {
     if (searchInput.length > 0) {
         filteredRecipes = search(recipes, searchInput); 
@@ -58,7 +68,10 @@ function updatedRecipes() {
         filteredRecipes = recipes;
     }
     recipeDisplay(filteredRecipes);
-    tagsDisplay(filteredRecipes, "", updatedRecipes);
+
+    tagsDisplay(filteredRecipes, "", updatedRecipes, "ingredient");
+    tagsDisplay(filteredRecipes, "", updatedRecipes, "appareil");
+    tagsDisplay(filteredRecipes, "", updatedRecipes, "ustensil");
 }
 
 init();

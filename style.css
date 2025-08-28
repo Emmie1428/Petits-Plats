@@ -148,7 +148,9 @@ h1 {
     position: relative;
 }
 
-.ingredientsTags{
+.ingredientsTags, 
+.appareilsTags,
+.ustensilsTags {
     flex-direction: column;
 }
 
@@ -192,6 +194,13 @@ h1 {
     cursor: pointer;
 }
 
+.recipeCount {
+    display: flex;
+    flex-direction: row-reverse;
+    place-self: center;
+    font-size: 21px;
+}
+
 .tagContainer {
     display: flex;
     padding: 20px 100px 0;
@@ -208,13 +217,6 @@ h1 {
     justify-content: space-between;
     align-items: center;
 
-}
-
-.recipeCount {
-    display: flex;
-    flex-direction: row-reverse;
-    place-self: center;
-    font-size: 21px;
 }
 
 /*Recipe styles*/
