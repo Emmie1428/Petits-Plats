@@ -23,6 +23,47 @@ async function getRecipe() {
     }
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//Gestion du x pour effacer le contenu des inputs de recherche
+function eraseSearch () {
+    const allSearchInputs = document.querySelectorAll(".search");
+    
+    allSearchInputs.forEach(function (input) {
+        const eraseInput = input.parentElement.querySelector(".fa-xmark")
+        
+        input.addEventListener("input", function() {
+            if (input.value.length > 0) {
+                eraseInput.classList.remove("hidden")
+            } else {
+                eraseInput.classList.add("hidden");
+            }
+        });
+    
+        eraseInput.addEventListener("click", function() {
+            input.value= "";
+            eraseInput.classList.add("hidden");
+
+            input.dispatchEvent(new Event("input"));
+        });
+
+    });
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//Compteur de recettes
+function recipeCounter(recipes) {
+    const countDisplay = document.querySelector(".recipeCount");
+    const recipeNumber = recipes.length;
+
+    if (recipeNumber ===  0) {
+        countDisplay.innerHTML = "0 recette";
+    } else if (recipeNumber === 1) {
+        countDisplay.innerHTML = "1 recette";
+    } else {
+        countDisplay.textContent = `${recipeNumber} recettes`;    
+    }
+}
+
 
 async function init() {
     recipes = await getRecipe();
@@ -32,6 +73,9 @@ async function init() {
     tagsDisplay(filteredRecipes, "", updatedRecipes, "appareil", searchInput);
     tagsDisplay(filteredRecipes, "", updatedRecipes, "ustensil", searchInput);
     
+    eraseSearch (); 
+    recipeCounter(filteredRecipes); 
+
     //Recherche principale
     document.querySelector(".mainSearch").addEventListener("input", (e) => {
         updatedRecipes();
@@ -88,6 +132,9 @@ function updatedRecipes() {
     tagsDisplay(filteredRecipes, "", updatedRecipes, "ingredient", searchInput);
     tagsDisplay(filteredRecipes, "", updatedRecipes, "appareil", searchInput);
     tagsDisplay(filteredRecipes, "", updatedRecipes, "ustensil", searchInput);
+
+    recipeCounter(filteredRecipes); 
+
 }
 
 init();

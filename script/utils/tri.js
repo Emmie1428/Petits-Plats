@@ -106,7 +106,7 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
     tagValue.forEach(tag => {
         if (!tag) return;
         const li = document.createElement("li");
-        li.textContent = tag;
+        li.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
 
         li.addEventListener("click", () => {
             if (!searchInput.some((item) => normalize(item.value) === normalize(tag) && item.tag === true)) {
@@ -218,3 +218,11 @@ export function createTag(value, updatedSearch, searchInput) {
     tag.appendChild(closeIcon);
     tagContainer.appendChild(tag);
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+//Gestion du x dans les input
+function eraseInput () {
+    input.remove()
+}
+
