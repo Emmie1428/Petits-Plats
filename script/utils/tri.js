@@ -103,21 +103,29 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
     const ul = document.querySelector(listType);
     ul.innerHTML = "";
 
-    tagValue.forEach(tag => {
-        if (!tag) return;
+    if (tagValue.length === 0) {
         const li = document.createElement("li");
-        li.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
-
-        li.addEventListener("click", () => {
-            if (!searchInput.some((item) => normalize(item.value) === normalize(tag) && item.tag === true)) {
-                createTag(tag, updatedSearch, searchInput);
-                searchInput.push({value: tag, tag: true});
-                
-                if (updatedSearch) updatedSearch();
-            }   
-        });
+        li.textContent = "Aucune correspondance";
+        li.classList.add("error-message");
         ul.appendChild(li);
-    });
+    } else {
+        tagValue.forEach(tag => {
+            if (!tag) return;
+            const li = document.createElement("li");
+            li.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
+            li.setAttribute("tabindex", "0");
+
+            li.addEventListener("click", () => {
+                if (!searchInput.some((item) => normalize(item.value) === normalize(tag) && item.tag === true)) {
+                    createTag(tag, updatedSearch, searchInput);
+                    searchInput.push({value: tag, tag: true});
+                    
+                    if (updatedSearch) updatedSearch();
+                }   
+            });
+        ul.appendChild(li);
+        });
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -127,7 +135,7 @@ export function initTri() {
 
     tagLists.forEach(tagLists => {
         const currentOption = tagLists.querySelector("li");
-        const otherOptions = tagLists.querySelectorAll("li:not(:first-child)");
+        const otherOptions = tagLists.querySelectorAll("li:not(:first-child):not(.error-message)");
         const menuDown = tagLists.querySelector(".menuDown");
         const menuUp = tagLists.querySelector(".menuUp");
 

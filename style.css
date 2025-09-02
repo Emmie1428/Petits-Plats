@@ -130,28 +130,41 @@ h1 {
     border-radius: 11px;
     font-size: 14px;
     position: absolute;
+    max-height: 315px;
+    overflow: clip;
 }
 
-.tagLists li:first-child {
+.listTitle {
     display: flex;
     justify-content: space-between;
     font-size: 16px;
     font-weight: 500;
-    margin: 0;
+    margin: 0 !important;
     color: black;
+    padding: 0;
 }
 
-.tagLists li {
+.ingredientsTags li,
+.appareilsTags li,
+.ustensilsTags li {
     display: flex;
     cursor: pointer;
-    margin-top: 13px;
+    height: 37px;
     position: relative;
+    align-items: anchor-center;
 }
+
 
 .ingredientsTags, 
 .appareilsTags,
 .ustensilsTags {
-    flex-direction: column;
+    margin-top: 50px;
+}
+
+.ingredientsTags li:hover, 
+.appareilsTags li:hover,
+.ustensilsTags li:hover {
+    background-color: #FFD15B;
 }
 
 .menuUp, 
@@ -161,7 +174,9 @@ h1 {
     color: #1B1B1B;
 }
 
-.searchInput {
+.searchInputIngredient,
+.searchInputAppareil,
+.searchInputUstensil {
     border: 1px solid color-mix(in srgb, #C6C6C6 80%, #000000 20%);
     height: 36px;
     width: 163px;
@@ -174,6 +189,7 @@ h1 {
 
 .tagSearchBar {
     position: absolute;
+    margin-top: 10px;
 }
 
 .tagSearchButton .fa-xmark {
