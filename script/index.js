@@ -42,8 +42,19 @@ function eraseSearch () {
         eraseInput.addEventListener("click", function() {
             input.value= "";
             eraseInput.classList.add("hidden");
+            input.focus();
 
             input.dispatchEvent(new Event("input"));
+        });
+
+        eraseInput.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+                input.value= "";
+                eraseInput.classList.add("hidden");
+                input.focus();
+
+                input.dispatchEvent(new Event("input"));
+            }
         });
 
     });

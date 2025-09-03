@@ -17,8 +17,8 @@
     <h1 class="anton-font dark-yellow absolute z-10 self-center">CHERCHEZ PARMI PLUS DE 1500 RECETTES <br>DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES</h1>
     <div class="searchBar absolute z-10 bg-white manrope-font">
       <input class="mainSearch search" type="search" placeholder="Rechercher une recette, un ingrédient, ..." name="search-bar" onfocus="this.select()">
-      <i class="fa-solid fa-xmark hidden"></i>
-      <button class="searchButton" type="submit">
+      <i class="fa-solid fa-xmark hidden" tabindex="0"></i>
+      <button class="searchButton" type="submit" tabindex="-1">
         <i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i>
     </div>
   </header>
@@ -31,11 +31,11 @@
             <i class="fa-solid fa-chevron-down menuDown "></i>
             <i class="fa-solid fa-chevron-up menuUp hidden"></i>
           </li>
-          <li class="tagSearchBar hidden" tabindex="0" aria-label="Ingredient Search">
-            <input class="searchInputIngredient search" type="search" placeholder="Ingrédients" name="search-bar" onfocus="this.select()">
-            <button class="tagSearchButton" type="submit">
-              <i class="fa-solid fa-xmark hidden"></i>
-              <i class="fa-solid fa-magnifying-glass"></i>
+          <li class="tagSearchBar hidden" aria-label="Ingredient Search">
+            <input class="searchInputIngredient search" type="search" placeholder="Ingrédients" name="search-bar" tabindex="0" onfocus="this.select()">
+            <button class="tagSearchButtons" type="submit" tabindex="-1">
+              <i class="fa-solid fa-xmark hidden" tabindex="0"></i>
+              <i class="fa-solid fa-magnifying-glass" tabindex="-1"></i>
             </button>
           </li>
           <li class="ingredientsTags hidden"></li>
@@ -48,11 +48,11 @@
             <i class="fa-solid fa-chevron-down  menuDown"></i>
             <i class="fa-solid fa-chevron-up menuUp hidden"></i>
           </li>
-          <li class="tagSearchBar hidden" tabindex="0" aria-label="Appareils Search">
-            <input class="searchInputAppareil search" type="search" placeholder="Appareils" name="search-bar" onfocus="this.select()">
-            <button class="tagSearchButton" type="submit">
-              <i class="fa-solid fa-xmark hidden"></i>
-              <i class="fa-solid fa-magnifying-glass"></i>
+          <li class="tagSearchBar hidden" aria-label="Appareils Search">
+            <input class="searchInputAppareil search" type="search" placeholder="Appareils" name="search-bar" tabindex="0" onfocus="this.select()">
+            <button class="tagSearchButtons" type="submit" tabindex="-1">
+              <i class="fa-solid fa-xmark hidden" tabindex="0"></i>
+              <i class="fa-solid fa-magnifying-glass" tabindex="-1"></i>
             </button>
           </li>
           <li class="appareilsTags hidden"></li>
@@ -65,11 +65,11 @@
             <i class="fa-solid fa-chevron-down  menuDown"></i>
             <i class="fa-solid fa-chevron-up menuUp hidden"></i>
           </li>
-          <li class="tagSearchBar hidden" tabindex="0" aria-label="Ustensils Search">
-            <input class="searchInputUstensil search" type="search" placeholder="Ustensils" name="search-bar" onfocus="this.select()">
-            <button class="tagSearchButton" type="submit">
-              <i class="fa-solid fa-xmark hidden"></i>
-              <i class="fa-solid fa-magnifying-glass"></i>
+          <li class="tagSearchBar hidden" aria-label="Ustensils Search">
+            <input class="searchInputUstensil search" type="search" placeholder="Ustensils" name="search-bar" tabindex="0" onfocus="this.select()">
+            <button class="tagSearchButtons" type="submit" tabindex="-1">
+              <i class="fa-solid fa-xmark hidden" tabindex="0"></i>
+              <i class="fa-solid fa-magnifying-glass" tabindex="-1"></i>
             </button>
           </li>
           <li class="ustensilsTags hidden"></li>

@@ -86,7 +86,8 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
         case "ustensil":    
             listType = ".ustensilsTags";
             tagValue = recipes.flatMap(recipe =>
-                 recipe.ustensils);
+                recipe.ustensils.map(ustensil => 
+                ustensil.charAt(0).toUpperCase() + ustensil.slice(1)));
             break;
     }
 
@@ -115,6 +116,7 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
             li.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
             li.setAttribute("tabindex", "0");
 
+            //Recherche lancé avec click
             li.addEventListener("click", () => {
                 if (!searchInput.some((item) => normalize(item.value) === normalize(tag) && item.tag === true)) {
                     createTag(tag, updatedSearch, searchInput);
@@ -123,6 +125,19 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
                     if (updatedSearch) updatedSearch();
                 }   
             });
+
+            //Recherche lancé avec Enter
+            li.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    if (!searchInput.some((item) => normalize(item.value) === normalize(tag) && item.tag === true)) {
+                    createTag(tag, updatedSearch, searchInput);
+                    searchInput.push({value: tag, tag: true});
+                    
+                    if (updatedSearch) updatedSearch();
+                    } 
+                }    
+            });
+
         ul.appendChild(li);
         });
     }
@@ -198,8 +213,8 @@ export function createTag(value, updatedSearch, searchInput) {
     tag.classList.add("tag");
 
     //Ajout icone fermeture
-    const closeIcon = document.createElement("span");
-    closeIcon.innerHTML = "X";
+    const closeIcon = document.createElement("i");
+    closeIcon.className = "fa-solid fa-xmark";
     closeIcon.classList.add("closeIcon");
     closeIcon.setAttribute("role", "button");
     closeIcon.setAttribute("tabindex", "0");
@@ -227,10 +242,4 @@ export function createTag(value, updatedSearch, searchInput) {
     tagContainer.appendChild(tag);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////
-//Gestion du x dans les input
-function eraseInput () {
-    input.remove()
-}
 
