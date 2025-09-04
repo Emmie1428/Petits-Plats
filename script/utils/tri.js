@@ -2,12 +2,6 @@ import recipesTemplate from "/script/template/recipes.js";
 
 let recipes = [];
 
-//Récupération du nom d'un ingrédient car dans tableau
-function ingredientName(ingredient) {
-    if(!ingredient) return "";
-    return(typeof ingredient === "string" ? ingredient.toLowerCase() : ingredient.ingredient.toLowerCase());
-}
-
 //Normalisation majuscule, accent, espace
 export function normalize(str) {
     if (!str) return "";
@@ -21,27 +15,68 @@ export function normalize(str) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Fonction de recherche
 export function search(recipes, searchInput) {
-    if (!Array.isArray(searchInput)) searchInput = [searchInput];
+    let resultats = [];
     
+    //Normalise toutes les valeurs de recherche
+    let searchValues = [];
+    for (let s = 0; s < searchInput.length; s++) {
+        const normalizedValue = normalize(searchInput[s].value);
+        if (normalizedValue.length > 0) {
+            searchValues[searchValues.length] = normalizedValue;
+        }
+    }
     
-    const searchValue = searchInput.map((input) => normalize(input.value));
-    if (searchValue.length === 0) return recipes;
+    //Affiche toutes les recettes au départ
+    if (searchValues.length === 0) return recipes;
 
-    return recipes.filter((recipe) => {
+     for (let i = 0; i < recipes.length; i++) {
+        const recipe = recipes[i];
+        
+        //Normalisation des éléments des recettes
         const name = normalize(recipe.name);
-        const description = normalize(recipe.description);  
-        const ingredients = recipe.ingredients.map(ingredient => ingredientName(ingredient)).join(" ");
+        const description = normalize(recipe.description);
         const appliance = normalize(recipe.appliance);
-        const ustensils = recipe.ustensils.map(ustensil => normalize(ustensil)).join(" ");
+        
+        //Mettre les ingrédients sous forme de chaine et normalisés
+        let ingredients = "";
+        for (let ing = 0; ing < recipe.ingredients.length; ing++) {
+            const ingredient = recipe.ingredients[ing];
+            if (typeof ingredient === "string") {
+                ingredients += normalize(ingredient) + " ";
+            } else if (ingredient && ingredient.ingredient) {
+                ingredients += normalize(ingredient.ingredient) + " ";
+            }
+        }
+        
+        // 6. Mettre les ustensils sous forme de chaine et normalisés
+        let ustensils = "";
+        for (let ust = 0; ust < recipe.ustensils.length; ust++) {
+            ustensils += normalize(recipe.ustensils[ust]) + " ";
+        }
 
-        return searchValue.every(inputValue => 
-            name.includes(inputValue) ||
-            description.includes(inputValue) ||    
-            ingredients.includes(inputValue) ||
-            appliance.includes(inputValue) ||
-            ustensils.includes(inputValue)
-            );
-    });
+        //Recherche dans chaque type d'infos
+        let allFound = true;
+            for (let j = 0; j < searchValues.length; j++) {
+                const searchValue = searchValues[j];
+                
+                if (name.indexOf(searchValue) === -1 && 
+                    description.indexOf(searchValue) === -1 && 
+                    ingredients.indexOf(searchValue) === -1 && 
+                    appliance.indexOf(searchValue) === -1 && 
+                    ustensils.indexOf(searchValue) === -1) {
+                    
+                    allFound = false;
+                    break;
+                }
+            }
+            
+            //Ajoute les recettes quand tous les searchValue sont trouvés
+            if (allFound) {
+                resultats[resultats.length] = recipe;
+            }
+        }
+
+    return resultats;
 }
 
 
