@@ -128,7 +128,6 @@ h1 {
 
 .tagLists {
     width: 195px;
-    padding: 16px;
     border-radius: 11px;
     font-size: 14px;
     position: absolute;
@@ -143,7 +142,7 @@ h1 {
     font-weight: 500;
     margin: 0 !important;
     color: black;
-    padding: 0;
+    padding: 16px;
 }
 
 .ingredientsTags li,
@@ -154,13 +153,14 @@ h1 {
     height: 37px;
     position: relative;
     align-items: anchor-center;
+    padding: 16px;
 }
 
 
 .ingredientsTags, 
 .appareilsTags,
 .ustensilsTags {
-    margin-top: 50px;
+    margin-top: 45px;
 }
 
 .ingredientsTags li:hover, 
@@ -186,12 +186,11 @@ h1 {
     padding: 10px;
     color: #7A7A7A;
     outline: none;
-    padding-right: 30px;
+    margin-left: 15px
 }
 
 .tagSearchBar {
     position: absolute;
-    margin-top: 10px;
 }
 
 .tagSearchButtons .fa-xmark {
@@ -207,10 +206,11 @@ h1 {
 
 .tagSearchButtons .fa-magnifying-glass {
     width: 14px;
+    height: 14px;
     color: #7A7A7A;
     position: absolute;
-    left: 85%;
-    bottom: 30%;  
+    left: 130px;
+    place-self: anchor-center;
     cursor: pointer;
 }
 
