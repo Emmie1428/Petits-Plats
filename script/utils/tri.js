@@ -23,10 +23,11 @@ export function normalize(str) {
 export function search(recipes, searchInput) {
     if (!Array.isArray(searchInput)) searchInput = [searchInput];
     
-    
+    //Affiche toutes les recettes au départ
     const searchValue = searchInput.map((input) => normalize(input.value));
     if (searchValue.length === 0) return recipes;
 
+    //Filre les recettes
     return recipes.filter((recipe) => {
         const name = normalize(recipe.name);
         const description = normalize(recipe.description);  
@@ -34,6 +35,7 @@ export function search(recipes, searchInput) {
         const appliance = normalize(recipe.appliance);
         const ustensils = recipe.ustensils.map(ustensil => normalize(ustensil)).join(" ");
 
+        //Retourne les recettes correspondantes aux critères de recherche
         return searchValue.every(inputValue => 
             name.includes(inputValue) ||
             description.includes(inputValue) ||    
@@ -53,7 +55,7 @@ export function recipeDisplay(recipes) {
     recipeContainer.innerHTML = "";
 
     if (!recipes || recipes.length === 0) {
-        recipeContainer.innerHTML = "<p>Aucune recette trouvée</p>";
+        recipeContainer.innerHTML = "<p>Aucune recette ne convient à votre recherche. Essayez «tarte aux pommes», «poisson», etc.</p>";
         return;
     }
 
