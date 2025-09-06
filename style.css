@@ -165,7 +165,10 @@ h1 {
 
 .ingredientsTags li:hover, 
 .appareilsTags li:hover,
-.ustensilsTags li:hover {
+.ustensilsTags li:hover,
+.ingredientsTags li:focus, 
+.appareilsTags li:focus,
+.ustensilsTags li:focus {
     background-color: #FFD15B;
 }
 
@@ -209,7 +212,7 @@ h1 {
     height: 14px;
     color: #7A7A7A;
     position: absolute;
-    left: 130px;
+    left: 145px;
     place-self: anchor-center;
     cursor: pointer;
 }

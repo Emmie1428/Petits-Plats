@@ -29,6 +29,7 @@ export function search(recipes, searchInput) {
     //Affiche toutes les recettes au départ
     if (searchValues.length === 0) return recipes;
 
+    //Parcours toutes les recettes
      for (let i = 0; i < recipes.length; i++) {
         const recipe = recipes[i];
         
@@ -37,7 +38,7 @@ export function search(recipes, searchInput) {
         const description = normalize(recipe.description);
         const appliance = normalize(recipe.appliance);
         
-        //Mettre les ingrédients sous forme de chaine et normalisés
+        //Parcours ingrédients sous forme de chaine et normalisés
         let ingredients = "";
         for (let ing = 0; ing < recipe.ingredients.length; ing++) {
             const ingredient = recipe.ingredients[ing];
@@ -48,13 +49,13 @@ export function search(recipes, searchInput) {
             }
         }
         
-        // 6. Mettre les ustensils sous forme de chaine et normalisés
+        //Parcours les ustensils sous forme de chaine et normalisés
         let ustensils = "";
         for (let ust = 0; ust < recipe.ustensils.length; ust++) {
             ustensils += normalize(recipe.ustensils[ust]) + " ";
         }
 
-        //Recherche dans chaque type d'infos
+        //Vérifie dans chaque type d'infos
         let allFound = true;
             for (let j = 0; j < searchValues.length; j++) {
                 const searchValue = searchValues[j];
@@ -141,7 +142,7 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
 
     if (tagValue.length === 0) {
         const li = document.createElement("li");
-        li.textContent = "Aucune correspondance";
+        li.textContent = "Aucun résultat";
         li.classList.add("error-message");
         ul.appendChild(li);
     } else {
