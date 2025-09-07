@@ -88,11 +88,13 @@ export function recipeDisplay(recipes) {
     if (!recipeContainer) return;
     recipeContainer.innerHTML = "";
 
+    //Message erreur si aucune recette trouvée
     if (!recipes || recipes.length === 0) {
-        recipeContainer.innerHTML = "<p>Aucune recette trouvée</p>";
+        recipeContainer.innerHTML = "<p>Aucune recette ne convient à votre recherche. Essayez «tarte aux pommes», «poisson», etc.</p>";
         return;
     }
 
+    //Affichage des recettes
     recipes.forEach((recipe) => {
        const recipeModel = recipesTemplate(recipe);
        const recipeCardDOM = recipeModel.getRecipeCardDOM();    
@@ -107,6 +109,7 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
     let listType;
     let tagValue = [];
 
+    //Récupération des données selon le type
     switch (type) {
         case "ingredient": 
             listType = ".ingredientsTags";
@@ -127,6 +130,7 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
             break;
     }
 
+    //Évite les valeurs vides, les doublons et normalise
     tagValue = tagValue
         .filter(tag => tag)
         .filter((tag, index, array) => {

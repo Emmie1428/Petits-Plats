@@ -31,6 +31,7 @@ function eraseSearch () {
     allSearchInputs.forEach(function (input) {
         const eraseInput = input.parentElement.querySelector(".fa-xmark")
         
+        //Fait apparaître le x s'il y a du texte dans input
         input.addEventListener("input", function() {
             if (input.value.length > 0) {
                 eraseInput.classList.remove("hidden")
@@ -38,7 +39,8 @@ function eraseSearch () {
                 eraseInput.classList.add("hidden");
             }
         });
-    
+        
+        //Efface avec click sur le x
         eraseInput.addEventListener("click", function() {
             input.value= "";
             eraseInput.classList.add("hidden");
@@ -47,6 +49,7 @@ function eraseSearch () {
             input.dispatchEvent(new Event("input"));
         });
 
+        //Efface avec enter sur le x
         eraseInput.addEventListener("keydown", (event) => {
             if (event.key === "Enter" || event.key === " ") {
                 input.value= "";
@@ -75,7 +78,8 @@ function recipeCounter(recipes) {
     }
 }
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//Initialisation princiaple
 async function init() {
     recipes = await getRecipe();
     filteredRecipes = recipes;
@@ -110,28 +114,33 @@ async function init() {
     initTri();
 }
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 //Rafraichis les recettes selon les types de recherches
 function updatedRecipes() {
+    //Récupère la valeur de la recherche princiaple
     const mainSearchInput = document.querySelector(".mainSearch");
     const mainSearchValue = mainSearchInput ? mainSearchInput.value.trim() : ""; 
 
+    //Récupère les tags visibles
     const visibleTags = Array.from(document.querySelectorAll(".tag")).map(tagElement => {
         return tagElement.textContent.replace("X", "").trim();
     });
 
     searchInput = [];
     
+    //Recherche principale à partir de 3 caractères
     if (mainSearchValue.length >= 3) {
         searchInput.push({value: mainSearchValue, tag: false});
     }
 
+    //Ajout des tags visibles
     visibleTags.forEach(tagValue => {
         if (tagValue) {
             searchInput.push({value: tagValue, tag: true});
         }
     });
     
+    //Filtrage des recettes
     if (searchInput.length > 0) {
         filteredRecipes = search(recipes, searchInput); 
     } else {
