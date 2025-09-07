@@ -196,7 +196,7 @@ h1 {
     position: absolute;
 }
 
-.tagSearchButtons .fa-xmark {
+.tagSearchBar .fa-xmark {
     height: 12px;
     width: 12px;
     color: #7A7A7A;
@@ -207,7 +207,7 @@ h1 {
     align-self: anchor-center;
 }
 
-.tagSearchButtons .fa-magnifying-glass {
+.tagSearchBar .fa-magnifying-glass {
     width: 14px;
     height: 14px;
     color: #7A7A7A;
