@@ -1,10 +1,8 @@
 import {
     search,
     recipeDisplay,
-    initTri,
-    tagsDisplay,
-    normalize,
-    createTag
+    listDisplay,
+    tagsDisplay 
     } from "./utils/tri.js";
 
     let recipes = [];
@@ -111,7 +109,7 @@ async function init() {
         tagsDisplay(filteredRecipes, e.target.value.trim(), updatedRecipes, "ustensil", searchInput);
     });
 
-    initTri();
+    listDisplay();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -130,13 +130,19 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
             break;
     }
 
-    //Évite les valeurs vides, les doublons et normalise
+    //Récupère les tags actifs
+    const currentTags= searchInput
+        .filter(item => item.tag === true)
+        .map(item => normalize(item.value));
+
+    //Évite les valeurs vides, les doublons, normalize et exclus les tags actifs
     tagValue = tagValue
         .filter(tag => tag)
         .filter((tag, index, array) => {
             return array.findIndex(tagValue => normalize(tagValue) === normalize(tag)) === index;
         })
-        .filter(tag => normalize(tag).includes(normalize(searchValue)));
+        .filter(tag => normalize(tag).includes(normalize(searchValue)))
+        .filter(tag => !currentTags.includes(normalize(tag)));
 
     //Ordre alphabétque
     tagValue.sort((a, b) => a.localeCompare(b));
@@ -185,7 +191,7 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //Initialisation liste déroulante
-export function initTri() {
+export function listDisplay() {
     const tagLists = document.querySelectorAll(".tagLists");
 
     tagLists.forEach(tagLists => {
