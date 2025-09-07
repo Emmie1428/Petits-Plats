@@ -54,11 +54,13 @@ export function recipeDisplay(recipes) {
     if (!recipeContainer) return;
     recipeContainer.innerHTML = "";
 
+    //Message si aucune recette ne correspond
     if (!recipes || recipes.length === 0) {
         recipeContainer.innerHTML = "<p>Aucune recette ne convient à votre recherche. Essayez «tarte aux pommes», «poisson», etc.</p>";
         return;
     }
 
+    //Affichage des recettes
     recipes.forEach((recipe) => {
        const recipeModel = recipesTemplate(recipe);
        const recipeCardDOM = recipeModel.getRecipeCardDOM();    
@@ -73,6 +75,7 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
     let listType;
     let tagValue = [];
 
+    //Récupération des valeurs selon le type recherche
     switch (type) {
         case "ingredient": 
             listType = ".ingredientsTags";
@@ -93,12 +96,19 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
             break;
     }
 
+    //Récupère les tags actifs
+    const currentTags= searchInput
+        .filter(item => item.tag === true)
+        .map(item => normalize(item.value));
+
+    //Évite les valeurs vides, les doublons, normalize et exclus les tags actifs
     tagValue = tagValue
         .filter(tag => tag)
         .filter((tag, index, array) => {
             return array.findIndex(tagValue => normalize(tagValue) === normalize(tag)) === index;
         })
-        .filter(tag => normalize(tag).includes(normalize(searchValue)));
+        .filter(tag => normalize(tag).includes(normalize(searchValue)))
+        .filter(tag => !currentTags.includes(normalize(tag)));
 
     //Ordre alphabétque
     tagValue.sort((a, b) => a.localeCompare(b));
@@ -106,6 +116,7 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
     const ul = document.querySelector(listType);
     ul.innerHTML = "";
 
+    //Message erreur si aucune correspondance, sinon crée les li
     if (tagValue.length === 0) {
         const li = document.createElement("li");
         li.textContent = "Aucune correspondance";
@@ -146,8 +157,8 @@ export function tagsDisplay(recipes, searchValue = "", updatedSearch, type = "in
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-//Initialisation liste déroulante
-export function initTri() {
+//Mécanique liste déroulante
+export function listDisplay() {
     const tagLists = document.querySelectorAll(".tagLists");
 
     tagLists.forEach(tagLists => {
