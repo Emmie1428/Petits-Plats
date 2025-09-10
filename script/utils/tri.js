@@ -75,8 +75,7 @@ export function search(recipes, searchInput) {
             if (allFound) {
                 resultats[resultats.length] = recipe;
             }
-        }
-
+        }                               
     return resultats;
 }
 

@@ -15,11 +15,6 @@
   font-family: "Manrope", sans-serif;
 }
 
-/*Color*/
-.dark-yellow {
-    color: color-mix(in srgb, #FFD15B 80%, #7E631D);
-} 
-
 /*General styles*/
 .hidden {
     display: none !important;
@@ -44,7 +39,7 @@ section {
 /*Header styles*/
 h1 {
     font-size: 44px;
-    justify-self: anchor-center;
+    justify-self: center;
     text-align: center;
 }
 
@@ -96,7 +91,7 @@ h1 {
 }
 
 .searchButton:hover {
-    background-color: color-mix(in srgb, #FFD15B 80%, #7E631D);
+    background-color: #FFD15B;
 }
 
 .searchButton .fa-magnifying-glass {
@@ -152,7 +147,7 @@ h1 {
     cursor: pointer;
     height: 37px;
     position: relative;
-    align-items: anchor-center;
+    align-items: center;
     padding: 16px;
 }
 
@@ -182,7 +177,7 @@ h1 {
 .searchInputIngredient,
 .searchInputAppareil,
 .searchInputUstensil {
-    border: 1px solid color-mix(in srgb, #C6C6C6 80%, #000000 20%);
+    border: 1px solid #C6C6C6;
     height: 36px;
     width: 163px;
     border-radius: 2px;
@@ -202,9 +197,9 @@ h1 {
     color: #7A7A7A;
     margin-right: 10px;
     position: absolute;
-    right: 23px;
+    right: 20px;
     font-size: small;
-    align-self: anchor-center;
+    align-self: center;
 }
 
 .tagSearchBar .fa-magnifying-glass {
@@ -212,8 +207,8 @@ h1 {
     height: 14px;
     color: #7A7A7A;
     position: absolute;
-    left: 145px;
-    place-self: anchor-center;
+    left: 155px;
+    place-self: center;
     cursor: pointer;
 }
 
@@ -270,7 +265,7 @@ h1 {
 
 .recipeTime {
     padding: 4px 12px 5px;
-    background-color: color-mix(in srgb, #FFD15B 80%, #7E631D);
+    background-color: #FFD15B;
     border-radius: 21px;
     width: 63px;
     height: 26px;
