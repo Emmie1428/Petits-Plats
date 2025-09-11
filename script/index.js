@@ -2,14 +2,14 @@ import {
     search,
     recipeDisplay,
     listDisplay,
-    tagsDisplay 
+    tagsDisplay
     } from "./utils/tri.js";
 
     let recipes = [];
     let filteredRecipes = [];
     let searchInput = [];
   
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 //Récupération des recettes
 async function getRecipe() {
     try {
@@ -17,7 +17,8 @@ async function getRecipe() {
         const data = await response.json();
         return data.recipes;
     } catch (error) {
-        return [] ;
+        console.error("Erreur lors du chargement des recettes:", error);
+        return [];
     }
 }
 
@@ -77,6 +78,13 @@ function recipeCounter(recipes) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+//Sanitize input accepter que les lettres pour éviter l'injection de code
+function sanitizeInput(input) {
+    let sanitize = new RegExp(/[^a-zA-Z]/g, '');
+    return input.replace(sanitize, '');
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 //Initialisation princiaple
 async function init() {
     recipes = await getRecipe();
@@ -90,23 +98,27 @@ async function init() {
     recipeCounter(filteredRecipes); 
 
     //Recherche principale
-    document.querySelector(".mainSearch").addEventListener("input", (e) => {
+    document.querySelector(".mainSearch").addEventListener("input", (event) => {
+        event.target.value = sanitizeInput(event.target.value);
         updatedRecipes();
     });
     
     //Recherche ingrédients
-    document.querySelector(".searchInputIngredient").addEventListener("input", (e) => {
-        tagsDisplay(filteredRecipes, e.target.value.trim(), updatedRecipes, "ingredient", searchInput);
+    document.querySelector(".searchInputIngredient").addEventListener("input", (event) => {
+        event.target.value = sanitizeInput(event.target.value);
+        tagsDisplay(filteredRecipes, event.target.value.trim(), updatedRecipes, "ingredient", searchInput);
     });
   
     //Recherche appareils
-    document.querySelector(".searchInputAppareil").addEventListener("input", (e) => {
-        tagsDisplay(filteredRecipes, e.target.value.trim(), updatedRecipes, "appareil", searchInput);
+    document.querySelector(".searchInputAppareil").addEventListener("input", (event) => {
+        event.target.value = sanitizeInput(event.target.value);
+        tagsDisplay(filteredRecipes, event.target.value.trim(), updatedRecipes, "appareil", searchInput);
     });
 
     //Recherche ustensils
-    document.querySelector(".searchInputUstensil").addEventListener("input", (e) => {
-        tagsDisplay(filteredRecipes, e.target.value.trim(), updatedRecipes, "ustensil", searchInput);
+    document.querySelector(".searchInputUstensil").addEventListener("input", (event) => {
+        event.target.value = sanitizeInput(event.target.value);
+        tagsDisplay(filteredRecipes, event.target.value.trim(), updatedRecipes, "ustensil", searchInput);
     });
 
     listDisplay();
