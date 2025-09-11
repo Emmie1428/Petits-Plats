@@ -1,6 +1,6 @@
 import recipesTemplate from "/script/template/recipes.js";
 
-let recipes = [];
+
 
 //Récupération du nom d'un ingrédient car dans tableau
 function ingredientName(ingredient) {

@@ -17,7 +17,8 @@ async function getRecipe() {
         const data = await response.json();
         return data.recipes;
     } catch (error) {
-        return [] ;
+        console.error("Erreur lors du chargement des recettes:", error);
+        return [];
     }
 }
 
@@ -90,23 +91,23 @@ async function init() {
     recipeCounter(filteredRecipes); 
 
     //Recherche principale
-    document.querySelector(".mainSearch").addEventListener("input", (e) => {
+    document.querySelector(".mainSearch").addEventListener("input", () => {
         updatedRecipes();
     });
     
     //Recherche ingrédients
-    document.querySelector(".searchInputIngredient").addEventListener("input", (e) => {
-        tagsDisplay(filteredRecipes, e.target.value.trim(), updatedRecipes, "ingredient", searchInput);
+    document.querySelector(".searchInputIngredient").addEventListener("input", (event) => {
+        tagsDisplay(filteredRecipes, event.target.value.trim(), updatedRecipes, "ingredient", searchInput);
     });
   
     //Recherche appareils
-    document.querySelector(".searchInputAppareil").addEventListener("input", (e) => {
-        tagsDisplay(filteredRecipes, e.target.value.trim(), updatedRecipes, "appareil", searchInput);
+    document.querySelector(".searchInputAppareil").addEventListener("input", (event) => {
+        tagsDisplay(filteredRecipes, event.target.value.trim(), updatedRecipes, "appareil", searchInput);
     });
 
     //Recherche ustensils
-    document.querySelector(".searchInputUstensil").addEventListener("input", (e) => {
-        tagsDisplay(filteredRecipes, e.target.value.trim(), updatedRecipes, "ustensil", searchInput);
+    document.querySelector(".searchInputUstensil").addEventListener("input", (event) => {
+        tagsDisplay(filteredRecipes, event.target.value.trim(), updatedRecipes, "ustensil", searchInput);
     });
 
     listDisplay();
