@@ -258,6 +258,8 @@ h1 {
     height: 253px;
     width: 100%;
     position: absolute;
+    object-fit: cover;
+    top: 0%;
 }
 
 .recipeTime {

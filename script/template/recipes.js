@@ -7,9 +7,12 @@ function recipesTemplate (data) {
         card.classList.remove("hidden");
 
         // Affichage image
-        const imgRecipe = card.querySelector(".imgRecipe");
+        const imgRecipe = document.createElement("img");
+        imgRecipe.classList.add("imgRecipe");
         imgRecipe.setAttribute("src", `assets/${data.image}`);
         imgRecipe.setAttribute("alt", `Recette de ${name}`);
+
+        card.appendChild(imgRecipe);
 
         // Affichage du temps de préparation
         const recipeTime = card.querySelector(".recipeTime");
